@@ -1,0 +1,27 @@
+* {
+    user-select: none;
+}
+
+html {
+    background-color: #040404;
+    
+    width: 100vw;
+    height: 100vh;
+}
+
+body {
+    background-color: #040404;
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    margin: 0;
+    
+    overflow: hidden;
+}
+
+#canvas {
+    position: absolute;
+}
