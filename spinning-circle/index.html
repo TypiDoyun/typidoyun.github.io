@@ -10,8 +10,23 @@
 <body>
     <canvas id="canvas"></canvas>
 
-    <script src="./utils/axis.js"></script>
-    <script src="./utils/vector.js"></script>
+    <script src="utils/axis.js"></script>
+    <script src="utils/vector.js"></script>
     <script src="index.js"></script>
+    <script>
+        window.onload = () => {
+            const rotateStep = new Vector(
+                toRadians(40),
+                toRadians(70),
+                toRadians(45)
+            )
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            context.fillStyle = "#FFF";
+            
+            initialize(6);
+            render(300, 1.5, 120, 370, [ 255, 255, 255 ], rotateStep);
+        }
+    </script>
 </body>
 </html>

@@ -13,14 +13,14 @@ const vertices: Vector[] = [ ];
 
 const toRadians = (angle: number) => angle * Math.PI / 180;
 
-const initialize = () => {
-    for (let _phi = 0; _phi < 360; _phi += 6) {
+const initialize = (dotStep: number) => {
+    for (let _phi = 0; _phi < 360; _phi += dotStep) {
         const phi = toRadians(_phi);
         const sinPhi = Math.sin(phi);
         const cosPhi = Math.cos(phi);
         
         
-        for (let _theta = 0; _theta < 180; _theta += 6) {
+        for (let _theta = 0; _theta < 180; _theta += dotStep) {
             const theta = toRadians(_theta);
             const sinTheta = Math.sin(theta);
             const cosTheta = Math.cos(theta);
@@ -37,7 +37,7 @@ const initialize = () => {
     }
 }
 
-const render = (radius: number, dotSize: number, FPS: number, zDistance: number, rotateStep: Vector = new Vector(0, 0, 0)) => {
+const render = (radius: number, dotSize: number, FPS: number, zDistance: number, color: [ number, number, number ], rotateStep: Vector = new Vector(0, 0, 0)) => {
     const rotate = new Vector(0, 0, 0);
     const _render = async () => {
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -50,7 +50,7 @@ const render = (radius: number, dotSize: number, FPS: number, zDistance: number,
 
             
             const lightPower = rotated.normalized.cosSimilarity(lightVector);
-            context.fillStyle = `rgba(255, 255, 255, ${(lightPower + 1) / 2})`;
+            context.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${(lightPower + 1) / 2})`;
             
             rotated.x *= radius;
             rotated.y *= radius;
@@ -76,18 +76,7 @@ const render = (radius: number, dotSize: number, FPS: number, zDistance: number,
     _render();
 }
 
-window.onload = () => {
-    const rotateStep = new Vector(
-        toRadians(40),
-        toRadians(70),
-        toRadians(45)
-    )
+window.onresize = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    context.fillStyle = "#FFF";
-
-    initialize();
-    render(160, 1.5, 120, 200, rotateStep);
-    // render(150, 1.5, 144, rotateStep);
-
 }

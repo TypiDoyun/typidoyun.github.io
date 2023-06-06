@@ -15,12 +15,12 @@ if (!context)
 const lightVector = new Vector(-2, -4, -1).normalized;
 const vertices = [];
 const toRadians = (angle) => angle * Math.PI / 180;
-const initialize = () => {
-    for (let _phi = 0; _phi < 360; _phi += 6) {
+const initialize = (dotStep) => {
+    for (let _phi = 0; _phi < 360; _phi += dotStep) {
         const phi = toRadians(_phi);
         const sinPhi = Math.sin(phi);
         const cosPhi = Math.cos(phi);
-        for (let _theta = 0; _theta < 180; _theta += 6) {
+        for (let _theta = 0; _theta < 180; _theta += dotStep) {
             const theta = toRadians(_theta);
             const sinTheta = Math.sin(theta);
             const cosTheta = Math.cos(theta);
@@ -31,14 +31,14 @@ const initialize = () => {
         }
     }
 };
-const render = (radius, dotSize, FPS, zDistance, rotateStep = new Vector(0, 0, 0)) => {
+const render = (radius, dotSize, FPS, zDistance, color, rotateStep = new Vector(0, 0, 0)) => {
     const rotate = new Vector(0, 0, 0);
     const _render = () => __awaiter(void 0, void 0, void 0, function* () {
         context.clearRect(0, 0, canvas.width, canvas.height);
         for (const vertex of vertices) {
             const rotated = vertex.multiRotated([Axis.X, Axis.Y, Axis.Z], [rotate.x, rotate.y, rotate.z]);
             const lightPower = rotated.normalized.cosSimilarity(lightVector);
-            context.fillStyle = `rgba(255, 255, 255, ${(lightPower + 1) / 2})`;
+            context.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${(lightPower + 1) / 2})`;
             rotated.x *= radius;
             rotated.y *= radius;
             rotated.z *= radius;
@@ -57,12 +57,7 @@ const render = (radius, dotSize, FPS, zDistance, rotateStep = new Vector(0, 0, 0
     });
     _render();
 };
-window.onload = () => {
-    const rotateStep = new Vector(toRadians(40), toRadians(70), toRadians(45));
+window.onresize = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    context.fillStyle = "#FFF";
-    initialize();
-    render(160, 1.5, 120, 200, rotateStep);
-    // render(150, 1.5, 144, rotateStep);
 };

@@ -7,7 +7,7 @@ class Vector {
     }
     ;
     get length() {
-        return Math.pow((Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2)), 0.5);
+        return (this.x ** 2 + this.y ** 2 + this.z ** 2) ** 0.5;
     }
     get normalized() {
         const vector = new Vector(this.x, this.y, this.z);

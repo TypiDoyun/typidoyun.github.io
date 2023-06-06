@@ -1,19 +1,20 @@
-var calculate = function (x, y) {
-    return "".concat(x).concat(y);
+"use strict";
+const calculate = (x, y) => {
+    return `${x}${y}`;
 };
-var renderOutput = function (value) {
-    var outputElement = document.getElementById("result");
+const renderOutput = (value) => {
+    const outputElement = document.getElementById("result");
     if (!outputElement)
         throw new Error("cannot find output element");
     outputElement.innerText = value;
 };
-var onButtonClick = function () {
-    var first = document.getElementById("first");
-    var second = document.getElementById("second");
+const onButtonClick = () => {
+    const first = document.getElementById("first");
+    const second = document.getElementById("second");
     if (!first || !second)
         throw new Error("cannot find input child");
     if (!(first instanceof HTMLInputElement) || !(second instanceof HTMLInputElement))
         return;
-    var value = calculate(first.value, second.value);
+    const value = calculate(first.value, second.value);
     renderOutput(value);
 };

@@ -11,6 +11,12 @@
     user-select: none;
 }
 
+canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
 h1 {
     position: absolute;
     left: 0;
@@ -211,6 +217,10 @@ body {
 }
 
 @media (max-width: 1024px) {
+
+    canvas {
+        position: fixed;
+    }
 
     *::-webkit-scrollbar {
         display: none;
