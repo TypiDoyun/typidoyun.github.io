@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 if (!context)
@@ -33,7 +24,7 @@ const initialize = (dotStep) => {
 };
 const render = (radius, dotSize, FPS, zDistance, color, rotateStep = new Vector(0, 0, 0)) => {
     const rotate = new Vector(0, 0, 0);
-    const _render = () => __awaiter(void 0, void 0, void 0, function* () {
+    const _render = async () => {
         context.clearRect(0, 0, canvas.width, canvas.height);
         for (const vertex of vertices) {
             const rotated = vertex.multiRotated([Axis.X, Axis.Y, Axis.Z], [rotate.x, rotate.y, rotate.z]);
@@ -48,13 +39,13 @@ const render = (radius, dotSize, FPS, zDistance, color, rotateStep = new Vector(
         rotate.x += (rotateStep.x) / FPS;
         rotate.y += (rotateStep.y) / FPS;
         rotate.z += (rotateStep.z) / FPS;
-        yield new Promise((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             setTimeout(() => {
                 _render();
                 resolve(true);
             }, 1000 / FPS);
         });
-    });
+    };
     _render();
 };
 window.onresize = () => {
