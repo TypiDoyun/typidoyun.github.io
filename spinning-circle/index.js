@@ -12,7 +12,7 @@ const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 if (!context)
     throw new Error("connot find context");
-const lightVector = new Vector(-2, -4, -1).normalized;
+const lightVector = new Vector(-2, -4, -1, 0, 0, 0).normalized;
 const vertices = [];
 const toRadians = (angle) => angle * Math.PI / 180;
 const initialize = (dotStep) => {
@@ -24,19 +24,23 @@ const initialize = (dotStep) => {
             const theta = toRadians(_theta);
             const sinTheta = Math.sin(theta);
             const cosTheta = Math.cos(theta);
-            const vertex = new Vector(cosTheta * sinPhi, sinTheta * sinPhi, cosPhi);
+            const vertex = new Vector(cosTheta * sinPhi, sinTheta * sinPhi, cosPhi, toRadians(Math.random() * 100), toRadians(Math.random() * 100), Math.floor(Math.random() * (80 - 0 + 1)) + 0);
             if (vertices.some(vertexElement => vertexElement.equals(vertex)))
                 continue;
             vertices.push(vertex);
         }
     }
 };
-const render = (radius, dotSize, FPS, zDistance, color, rotateStep = new Vector(0, 0, 0)) => {
-    const rotate = new Vector(0, 0, 0);
+const render = (radius, dotSize, FPS, zDistance, color, rotateStep = new Vector(0, 0, 0, 0, 0, 0)) => {
+    const rotate = new Vector(0, 0, 0, 0, 0, 0);
+    let _randomRateRadians = 0;
     const _render = () => __awaiter(void 0, void 0, void 0, function* () {
         context.clearRect(0, 0, canvas.width, canvas.height);
+        const randomRate = Math.sin(_randomRateRadians) / 2 + 0.5;
+        _randomRateRadians += 0.01;
         for (const vertex of vertices) {
-            const rotated = vertex.multiRotated([Axis.X, Axis.Y, Axis.Z], [rotate.x, rotate.y, rotate.z]);
+            const rotated = vertex.multiRotated([Axis.X, Axis.Y, Axis.Z], [rotate.x, rotate.y, rotate.z], [vertex.yaw, vertex.pitch, 0], randomRate);
+            rotated.multiply(1 - (vertex.quantization / 110) * randomRate);
             const lightPower = rotated.normalized.cosSimilarity(lightVector);
             context.fillStyle = `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${(lightPower + 1) / 2})`;
             rotated.x *= radius;
@@ -45,9 +49,9 @@ const render = (radius, dotSize, FPS, zDistance, color, rotateStep = new Vector(
             const size = rotated.z + zDistance;
             context.fillRect(canvas.width / 2 + rotated.x, canvas.height / 2 + rotated.y, dotSize / size * radius, dotSize / size * radius);
         }
-        rotate.x += (rotateStep.x) / FPS;
-        rotate.y += (rotateStep.y) / FPS;
-        rotate.z += (rotateStep.z) / FPS;
+        rotate.x += (rotateStep.x) / FPS * randomRate;
+        rotate.y += (rotateStep.y) / FPS * randomRate;
+        rotate.z += (rotateStep.z) / FPS * randomRate;
         yield new Promise((resolve, reject) => {
             setTimeout(() => {
                 _render();

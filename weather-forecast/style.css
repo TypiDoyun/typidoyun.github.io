@@ -1,0 +1,47 @@
+html {
+    width: 100vw;
+    height: 100vh;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    margin: 0;
+
+    background-color: #dddddd;
+}
+
+.container {
+    width: 40%;
+    height: 50%;
+
+    display: flex;
+    
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#location {
+    border: none;
+    outline: none;
+    box-shadow: -0.5px -0.5px 0px 0.5px rgba(0,0,0,0.75);
+}
+
+#search {
+    padding: 5px 6px;
+    background-color: white;
+    outline: none;
+    border: 1px solid #dddddd;
+    box-shadow: 0.5px 0.5px 0px 0.5px rgba(0,0,0,0.75), -1px -1px 0px 0.5px rgba(255, 255, 255,0.75);
+}
+
+#search:active {
+    box-shadow: -0.5px -0.5px 0px 0.5px rgba(0,0,0,0.75), 1px 1px 0px 0.5px rgba(255, 255, 255,0.75);
+}

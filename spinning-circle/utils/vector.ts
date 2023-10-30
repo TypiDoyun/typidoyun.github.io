@@ -1,13 +1,13 @@
 class Vector {
 
-    constructor(public x: number, public y: number, public z: number) { };
+    constructor(public x: number, public y: number, public z: number, public yaw: number, public pitch: number, public quantization: number) { };
 
     get length(): number {
         return (this.x ** 2 + this.y ** 2 + this.z ** 2) ** 0.5;
     }
 
     get normalized(): Vector {
-        const vector = new Vector(this.x, this.y, this.z);
+        const vector = new Vector(this.x, this.y, this.z, this.yaw, this.pitch, this.quantization);
 
         vector.x /= this.length;
         vector.y /= this.length;
@@ -20,9 +20,9 @@ class Vector {
         return this.x === vector.x && this.y === vector.y && this.z === vector.z;
     }
 
-    rotate(axis: Axis, radians: number) {
-        const sin = Math.sin(radians);
-        const cos = Math.cos(radians);
+    rotate(axis: Axis, radians: number, randomRadians: number, randomRate: number) {
+        const sin = Math.sin(radians + randomRadians * randomRate);
+        const cos = Math.cos(radians + randomRadians * randomRate);
 
         const rotate3D = (a: number, b: number): [ number, number ] => [ cos * a - sin * b, sin * a + cos * b ];
 
@@ -39,16 +39,16 @@ class Vector {
         }
     }
 
-    multiRotated(axes: Axis[], radians: number[]): Vector {
+    multiRotated(axes: Axis[], radians: number[], randomRadians: number[], randomRate: number): Vector {
         if (axes.length != radians.length) throw new Error("multiRotated Error!");
 
-        const vector = new Vector(this.x, this.y, this.z);
+        const vector = new Vector(this.x, this.y, this.z, this.yaw, this.pitch, this.quantization);
         
         for (let i = 0; i < axes.length; i++) {
             const radian = radians[i];
             const axis = axes[i];
-            const sin = Math.sin(radian);
-            const cos = Math.cos(radian);
+            const sin = Math.sin(radian + randomRadians[i] * randomRate);
+            const cos = Math.cos(radian + randomRadians[i] * randomRate);
             const rotate3D = (a: number, b: number): [ number, number ] => [ cos * a - sin * b, sin * a + cos * b ];
 
             switch (axis) {
@@ -67,8 +67,8 @@ class Vector {
         return vector;
     }
 
-    rotated(axis: Axis, radians: number): Vector {
-        const vector = new Vector(this.x, this.y, this.z);
+    rotated(axis: Axis, radians: number, randomRate: number): Vector {
+        const vector = new Vector(this.x, this.y, this.z, this.yaw, this.pitch, this.quantization);
         const sin = Math.sin(radians);
         const cos = Math.cos(radians);
 
@@ -87,6 +87,12 @@ class Vector {
         }
 
         return vector;
+    }
+
+    multiply(scalar: number) {
+        this.x *= scalar;
+        this.y *= scalar;
+        this.z *= scalar;
     }
 
     dotProduct(vector: Vector): number {
