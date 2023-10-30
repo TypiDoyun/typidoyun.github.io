@@ -25,7 +25,7 @@ const initialize = (dotStep) => {
 const render = (radius, dotSize, FPS, zDistance, color, rotateStep = new Vector(0, 0, 0, 0, 0, 0)) => {
     const rotate = new Vector(0, 0, 0, 0, 0, 0);
     let _randomRateRadians = 0;
-    const _render = () => __awaiter(void 0, void 0, void 0, function* () {
+    const _render = async () => {
         context.clearRect(0, 0, canvas.width, canvas.height);
         const randomRate = Math.sin(_randomRateRadians) / 2 + 0.5;
         _randomRateRadians += 0.01;
@@ -43,13 +43,13 @@ const render = (radius, dotSize, FPS, zDistance, color, rotateStep = new Vector(
         rotate.x += (rotateStep.x) / FPS * randomRate;
         rotate.y += (rotateStep.y) / FPS * randomRate;
         rotate.z += (rotateStep.z) / FPS * randomRate;
-        yield new Promise((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             setTimeout(() => {
                 _render();
                 resolve(true);
             }, 1000 / FPS);
         });
-    });
+    };
     _render();
 };
 window.onresize = () => {

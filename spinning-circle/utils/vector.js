@@ -1,5 +1,11 @@
 "use strict";
 class Vector {
+    x;
+    y;
+    z;
+    yaw;
+    pitch;
+    quantization;
     constructor(x, y, z, yaw, pitch, quantization) {
         this.x = x;
         this.y = y;
