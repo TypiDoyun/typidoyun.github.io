@@ -8,8 +8,87 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    min-height: 100vh;
 
-    background: linear-gradient(45deg, #606c38, #283618);
+    min-height: 100vh;
+    background: linear-gradient(45deg, #8460ed, #ff1252);
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+
+    width: 200px;
+    height: 200px;
+}
+
+.menu li {
+    position: absolute;
+    left: 0;
+
+    list-style: none;
+    
+    transition: .75s;
+    transition-delay: calc(.075s * var(--i));
+    transform-origin: 100px;
+    transform: rotate(-45deg) translateX(80px);
+}
+
+.menu li a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 40px;
+    height: 40px;
+
+    background: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+
+    border-radius: 50%;
+    
+    transition: .5s;
+    transform: rotate(calc(-360deg / 8 * var(--i)));
+
+    color: #111;
+}
+
+.menu li a:hover {
+    color: #ff1252;
+}
+
+.menu.active li {
+    transform: rotate(calc(360deg / 8 * var(--i)));
+}
+
+.menu.active .toggle {
+    transform: rotate(315deg);
+}
+
+.toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: absolute;
+    z-index: 20;
+    
+    width: 60px;
+    height: 60px;
+    
+    background: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    
+    border-radius: 50%;
+    cursor: pointer;
+    
+    transition: all 0.75s, color 0.25s;
+
+    font-size: 2em;
+}
+
+.toggle:hover {
+    color: #ff1252;
 }
