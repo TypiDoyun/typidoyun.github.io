@@ -103,3 +103,11 @@ const aStar = (map: Status[][]) => {
     print(result);
 }
 
+const clearTrail = () => {
+    const blocks = document.getElementsByClassName("block") as HTMLCollectionOf<HTMLDivElement>;
+
+    for (const block of blocks) {
+        if (block.getAttribute("data-status") !== "7") continue;
+        block.setAttribute("data-status", "0");
+    }
+}

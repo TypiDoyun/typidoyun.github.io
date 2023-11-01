@@ -91,3 +91,11 @@ const aStar = (map) => {
     };
     print(result);
 };
+const clearTrail = () => {
+    const blocks = document.getElementsByClassName("block");
+    for (const block of blocks) {
+        if (block.getAttribute("data-status") !== "7")
+            continue;
+        block.setAttribute("data-status", "0");
+    }
+};
