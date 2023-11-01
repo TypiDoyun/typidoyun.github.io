@@ -60,12 +60,12 @@ const operateFormula = (formula: string) => {
             }
             return operateFormula(formula);
         } else {
-            formula = formula.replace(/root(\d+(?:.\d+)?)/g, (_: string, a: string) => String(Math.sqrt(+a)));
-            formula = formula.replace(/(\d+(?:.\d+)?)\^(\d+(?:.\d+)?)/g, (_: string, a: string, b: string) => String((+a) ** +b));
-            formula = formula.replace(/(\d+(?:.\d+)?)\*(\d+(?:.\d+)?)/g, (_: string, a: string, b: string) => String(+a * +b));
-            formula = formula.replace(/(\d+(?:.\d+)?)\/(\d+(?:.\d+)?)/g, (_: string, a: string, b: string) => String(+a / +b));
-            formula = formula.replace(/(\d+(?:.\d+)?)\+(\d+(?:.\d+)?)/g, (_: string, a: string, b: string) => String(+a + +b));
-            formula = formula.replace(/(\d+(?:.\d+)?)\-(\d+(?:.\d+)?)/g, (_: string, a: string, b: string) => String(+a - +b));
+            formula = formula.replace(/root(\d+(?:\.\d+)?)/g, (_: string, a: string) => String(Math.sqrt(+a)));
+            formula = formula.replace(/(\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String((+a) ** +b));
+            formula = formula.replace(/(\d+(?:\.\d+)?)\*(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String(+a * +b));
+            formula = formula.replace(/(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String(+a / +b));
+            formula = formula.replace(/(\d+(?:\.\d+)?)\+(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String(+a + +b));
+            formula = formula.replace(/(\d+(?:\.\d+)?)\-(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String(+a - +b));
             return +formula;
         }
     }
@@ -73,7 +73,6 @@ const operateFormula = (formula: string) => {
     return operateFormula_(formula.replaceAll(" ", ""));
 }
 
-
-const result = operateFormula("2^(3/2)");
+const result = operateFormula("(2 + 2) * 4^(3/2)");
 
 console.log(result);
