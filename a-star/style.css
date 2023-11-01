@@ -1,0 +1,155 @@
+:root {
+    --border-weight: 2px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 100px;
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+
+    background: #111;
+}
+
+#map {
+    display: grid;
+    grid-template-rows: repeat(var(--height), 1fr);
+    grid-template-columns: repeat(var(--width), 1fr);
+    gap: 6px;
+
+    width: 600px;
+    height: 600px;
+}
+
+#glass {
+    display: none;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 100;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+
+    background-color: #f00;
+}
+
+.block {
+    box-sizing: border-box;
+    background: #fff;
+    opacity: 0.8;
+
+    transition: .2s;
+}
+
+.block:hover {
+    opacity: 0.9;
+
+    transform: scale(1.1);
+}
+
+.block:active {
+    opacity: 0.85;
+
+    transform: scale(1.02);
+}
+
+.block[data-status = "1"] {
+    background: #222;
+    border: var(--border-weight) solid #f2f2f2;
+}
+
+.block[data-status = "2"] {
+    background: #72eb57;
+    border: var(--border-weight) solid #f2f2f2;
+}
+
+.block[data-status = "3"] {
+    background: #fb5f5f;
+    border: var(--border-weight) solid #f2f2f2;
+}
+
+.block[data-status = "7"] {
+    background: rgb(43, 124, 255);
+    border: var(--border-weight) solid #f2f2f2;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+}
+
+.button {
+    position: relative;
+    overflow: hidden;
+
+    padding: 16px 50px;
+
+    background: #222;
+    border: 1px solid #fff;
+    border-radius: 2px;
+    user-select: none;
+
+    font-size: 16px;
+
+    transition: .2s;
+}
+
+.button:active {
+    transform: scale(1.1);
+}
+
+.button .text {
+    position: relative;
+    z-index: 3;
+
+    color: #fff;
+    font-weight: bold;
+
+    transition: color ease .3s;
+}
+
+.button:hover .text {
+    color: #222;
+}
+
+.button::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    top: -100%;
+    z-index: 2;
+
+    width: 100%;
+    height: 100%;
+    
+    background: #fff;
+    border-radius: 2px;
+
+    transition: ease .3s;
+}
+
+.button:hover::before {
+    top: 0;
+}
+
+@keyframes shake {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(5px, 5px) rotate(5deg); }
+    50% { transform: translate(0, 0) rotate(0eg); }
+    75% { transform: translate(-5px, 5px) rotate(-5deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}

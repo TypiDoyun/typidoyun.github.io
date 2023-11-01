@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- import css -->
+    <link rel="stylesheet" href="style.css">
+
+    <title>astar</title>
+</head>
+<body>
+    <div id="glass"></div>
+    <div id="map" style="--width: 13; --height: 13"></div>
+
+    <div class="buttons">
+        <span class="button" onclick="aStar(getMap())">
+            <span class="text">
+                길찾기 시작
+            </span>
+        </span>
+    
+        <span class="button" onclick="window.location.reload()">
+            <span class="text">
+                초기화
+            </span>
+        </span>
+    </div>
+
+    <!-- import javascript -->
+    <script src="utils/path.js"></script>
+    <script src="types/status.js"></script>
+    <script src="utils/get-map.js"></script>
+    <script src="utils/get-status.js"></script>
+    <script src="utils/init-map.js"></script>
+    <script src="utils/a-star.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
