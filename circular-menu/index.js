@@ -1,5 +1,6 @@
-var menu = document.querySelector(".menu");
-var toggle = document.querySelector(".toggle");
-toggle.addEventListener("click", function () {
+"use strict";
+const menu = document.querySelector(".menu");
+const toggle = document.querySelector(".toggle");
+toggle.addEventListener("click", () => {
     menu.classList.toggle("active");
 });
