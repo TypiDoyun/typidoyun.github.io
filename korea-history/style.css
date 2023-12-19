@@ -1,0 +1,8 @@
+li > span {
+    font-size: 10px;
+}
+
+li > span.important {
+    font-weight: bold;
+    font-size: 18px;
+}
