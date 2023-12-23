@@ -61,4 +61,8 @@ const getResult = (num) => {
     }
     timeout = setTimeout(() => result.innerText = '', 5000);
 };
+const sizeInput = document.getElementById("sizeInput");
+const sizeText = document.getElementById("sizeText");
+sizeInput.addEventListener("change", () => render(+sizeInput.value));
+sizeInput.addEventListener("input", () => sizeText.innerText = sizeInput.value);
 addEventListener("load", () => render(100));
