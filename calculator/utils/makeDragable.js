@@ -26,8 +26,10 @@ const makeDragable = (element) => {
         deltaPosition.y = eventData.clientY - startPosition.y;
         startPosition.x = eventData.clientX;
         startPosition.y = eventData.clientY;
-        element.style.left = `${element.offsetLeft + deltaPosition.x}px`;
-        element.style.top = `${element.offsetTop + deltaPosition.y}px`;
+        const left = Math.min(window.innerWidth - element.clientWidth, Math.max(0, element.offsetLeft + deltaPosition.x));
+        const top = Math.min(window.innerHeight - element.clientHeight, Math.max(0, element.offsetTop + deltaPosition.y));
+        element.style.left = `${left}px`;
+        element.style.top = `${top}px`;
     };
     element.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mousemove", onMouseMove);
