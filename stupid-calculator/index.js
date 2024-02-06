@@ -1,4 +1,3 @@
-"use strict";
 const calculate = (x, y) => {
     return `${x}${y}`;
 };

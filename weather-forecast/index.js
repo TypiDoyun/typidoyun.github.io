@@ -1,4 +1,3 @@
-"use strict";
 const color = "#999";
 const createModal = (titleMessage, message) => {
     const modal = document.createElement("div");

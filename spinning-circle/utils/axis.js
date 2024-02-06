@@ -1,4 +1,3 @@
-"use strict";
 var Axis;
 (function (Axis) {
     Axis[Axis["X"] = 0] = "X";

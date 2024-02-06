@@ -1,4 +1,3 @@
-"use strict";
 const calculatedPrimes = [2, 3, 5];
 const getPrimes = (max) => {
     const lastPrime = calculatedPrimes[calculatedPrimes.length - 1];

@@ -1,4 +1,3 @@
-"use strict";
 const isValidPath = (path, width, height) => {
     const map = getMap();
     return path.x >= 0 && path.x < width && path.y >= 0 && path.y < height && map[path.y][path.x] !== Status.Wall;

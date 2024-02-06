@@ -1,4 +1,3 @@
-"use strict";
 const menu = document.querySelector(".menu");
 const toggle = document.querySelector(".toggle");
 toggle.addEventListener("click", () => {

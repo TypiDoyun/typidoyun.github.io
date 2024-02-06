@@ -1,4 +1,3 @@
-"use strict";
 let lastStartElement;
 let lastEndElement;
 const changeStatus = (eventData) => {

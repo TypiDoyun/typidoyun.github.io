@@ -1,4 +1,3 @@
-"use strict";
 const getMap = () => {
     const elementMap = document.getElementById("map");
     const blocks = document.getElementsByClassName("block");

@@ -1,4 +1,3 @@
-"use strict";
 var Status;
 (function (Status) {
     Status[Status["Path"] = 0] = "Path";

@@ -1,4 +1,3 @@
-"use strict";
 const parentheses = ["(", ")"];
 const isParentheses = (character) => parentheses.includes(character);
 const isValidFormula = (formula) => {

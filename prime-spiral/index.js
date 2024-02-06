@@ -1,4 +1,3 @@
-"use strict";
 console.time("prime");
 const primes = getPrimes(500000);
 console.timeEnd("prime");
