@@ -72,5 +72,5 @@ const operateFormula = (formula) => {
     };
     return operateFormula_(formula.replaceAll(" ", ""));
 };
-const result = operateFormula("(2 + 2) * 4^(3/2)");
-console.log(result);
+const abc = operateFormula("");
+console.log(abc);

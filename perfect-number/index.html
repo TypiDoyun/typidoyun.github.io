@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- import css -->
+    <link rel="stylesheet" href="style.css">
+
+    <title>Perfect Number</title>
+</head>
+<body>
+    <canvas></canvas>
+    <footer>
+        <input type="range" id="sizeInput" value="100" min="6" max="5000">
+        <span id="sizeText">100</span>
+        <div id="input">
+            <input type="number" id="num">
+            <button onclick="getResult(+num.value)">Go!</button>
+        </div>
+        <span id="result"></span>
+    </footer>
+
+    <!-- import script -->
+
+    <script src="utils/get-divisors.js"></script>
+    <script src="utils/is-perfect-number.js"></script>
+
+    <script src="main.js"></script>
+</body>
+</html>

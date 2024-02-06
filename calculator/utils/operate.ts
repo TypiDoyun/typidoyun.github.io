@@ -60,12 +60,22 @@ const operateFormula = (formula: string) => {
             }
             return operateFormula(formula);
         } else {
-            formula = formula.replace(/root(\d+(?:\.\d+)?)/g, (_: string, a: string) => String(Math.sqrt(+a)));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String((+a) ** +b));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\*(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String(+a * +b));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String(+a / +b));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\+(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String(+a + +b));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\-(\d+(?:\.\d+)?)/g, (_: string, a: string, b: string) => String(+a - +b));
+            const regExps = [
+                /root(\d+(?:\.\d+)?)/g, // sqrt
+                /(\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g, // power
+                /(\d+(?:\.\d+)?)\*(\d+(?:\.\d+)?)/g, // multiply
+                /(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)/g, // divide
+                /(\d+(?:\.\d+)?)\+(\d+(?:\.\d+)?)/g, // add
+                /(\d+(?:\.\d+)?)\-(\d+(?:\.\d+)?)/g, // sub
+            ];
+            while (regExps.some(regExp => regExp.test(formula))) {
+                formula = formula.replace(regExps[0], (_: string, a: string) => String(Math.sqrt(+a)));
+                formula = formula.replace(regExps[1], (_: string, a: string, b: string) => String((+a) ** +b));
+                formula = formula.replace(regExps[2], (_: string, a: string, b: string) => String(+a * +b));
+                formula = formula.replace(regExps[3], (_: string, a: string, b: string) => String(+a / +b));
+                formula = formula.replace(regExps[4], (_: string, a: string, b: string) => String(+a + +b));
+                formula = formula.replace(regExps[5], (_: string, a: string, b: string) => String(+a - +b));
+            }
             return +formula;
         }
     }
@@ -73,6 +83,6 @@ const operateFormula = (formula: string) => {
     return operateFormula_(formula.replaceAll(" ", ""));
 }
 
-const result = operateFormula("(2 + 2) * 4^(3/2)");
+const abc = operateFormula("2 * root(2) * 3 * root(2)");
 
-console.log(result);
+console.log(abc);
