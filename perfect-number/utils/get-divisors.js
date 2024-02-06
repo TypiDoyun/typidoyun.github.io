@@ -1,4 +1,3 @@
-"use strict";
 const getDivisors = (num) => {
     if (num <= 0)
         return [];

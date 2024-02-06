@@ -1,4 +1,3 @@
-"use strict";
 // const main = async () => {
 //     for (let i = 0; i < 5; i++) {
 //         let count = 0;

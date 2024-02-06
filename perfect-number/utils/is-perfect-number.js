@@ -1,4 +1,3 @@
-"use strict";
 var NumberType;
 (function (NumberType) {
     NumberType[NumberType["PerfectNumber"] = 0] = "PerfectNumber";

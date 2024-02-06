@@ -61,16 +61,26 @@ const operateFormula = (formula) => {
             return operateFormula(formula);
         }
         else {
-            formula = formula.replace(/root(\d+(?:\.\d+)?)/g, (_, a) => String(Math.sqrt(+a)));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g, (_, a, b) => String((+a) ** +b));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\*(\d+(?:\.\d+)?)/g, (_, a, b) => String(+a * +b));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)/g, (_, a, b) => String(+a / +b));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\+(\d+(?:\.\d+)?)/g, (_, a, b) => String(+a + +b));
-            formula = formula.replace(/(\d+(?:\.\d+)?)\-(\d+(?:\.\d+)?)/g, (_, a, b) => String(+a - +b));
+            const regExps = [
+                /root(\d+(?:\.\d+)?)/g, // sqrt
+                /(\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g, // power
+                /(\d+(?:\.\d+)?)\*(\d+(?:\.\d+)?)/g, // multiply
+                /(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)/g, // divide
+                /(\d+(?:\.\d+)?)\+(\d+(?:\.\d+)?)/g, // add
+                /(\d+(?:\.\d+)?)\-(\d+(?:\.\d+)?)/g, // sub
+            ];
+            while (regExps.some(regExp => regExp.test(formula))) {
+                formula = formula.replace(regExps[0], (_, a) => String(Math.sqrt(+a)));
+                formula = formula.replace(regExps[1], (_, a, b) => String((+a) ** +b));
+                formula = formula.replace(regExps[2], (_, a, b) => String(+a * +b));
+                formula = formula.replace(regExps[3], (_, a, b) => String(+a / +b));
+                formula = formula.replace(regExps[4], (_, a, b) => String(+a + +b));
+                formula = formula.replace(regExps[5], (_, a, b) => String(+a - +b));
+            }
             return +formula;
         }
     };
     return operateFormula_(formula.replaceAll(" ", ""));
 };
-const abc = operateFormula("");
+const abc = operateFormula("2 * root(2) * 3 * root(2)");
 console.log(abc);
