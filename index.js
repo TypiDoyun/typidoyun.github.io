@@ -21,6 +21,9 @@ const move = (where) => {
 };
 const distanceLimit = 60;
 for (let index = 0; index < sections.length; index++) {
+    if (window.innerWidth < 1024)
+        continue;
+    console.log("on");
     const item = items[index];
     const section = sections[index];
     let tick = 0;
@@ -62,8 +65,8 @@ for (let index = 0; index < sections.length; index++) {
             console.log(destDirection);
             // console.log(destination);
             // console.log(absoluteCenter);
-            section.style.left = `${+section.style.left.replace("px", "") + (destDirection.x / 50)}px`;
-            section.style.top = `${+section.style.top.replace("px", "") + (destDirection.y / 50)}px`;
+            section.style.left = `${+section.style.left.replace("px", "") + (destDirection.x / 100)}px`;
+            section.style.top = `${+section.style.top.replace("px", "") + (destDirection.y / 100)}px`;
         }, 10);
     });
     section.addEventListener("mouseleave", () => {
