@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Document</title>
+</head>
+<body>
+    <div id="container">
+        <div id="imageSection">
+            <div class="imageLayer">
+                <img src="assets/4.png" alt="">
+            </div>
+
+
+            <div class="imageLayer">
+                <img src="assets/1.png" alt="">
+            </div>
+            <div class="imageLayer">
+                <img src="assets/2.png" alt="">
+            </div>
+            <div class="imageLayer">
+                <img src="assets/3.png" alt="">
+            </div>
+            <div class="imageLayer">
+                <img src="assets/4.png" alt="">
+            </div>
+
+
+            <div class="imageLayer">
+                <img src="assets/1.png" alt="">
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="moveButton" onclick="moveImage(0)"></button>
+            <button class="moveButton" onclick="moveImage(1)"></button>
+            <button class="moveButton" onclick="moveImage(2)"></button>
+            <button class="moveButton" onclick="moveImage(3)"></button>
+        </div>
+
+        <div class="slideButton" id="prevButton" onclick="prevImage()">
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+        <div class="slideButton" id="nextButton" onclick="nextImage()">
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
