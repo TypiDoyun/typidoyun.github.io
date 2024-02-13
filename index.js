@@ -10,30 +10,32 @@ const getMousePosition = (eventData) => {
     mousePosition.y = eventData.clientY;
 };
 addEventListener("mousemove", getMousePosition);
-const move = (where) => {
+const move = (where, behavior = "smooth") => {
     const element = document.getElementById(`section${where}`);
     if (!element)
         return;
     window.scrollTo({
         top: item.clientHeight * (where - 1),
-        behavior: "smooth"
+        behavior
     });
 };
+addEventListener("resize", () => {
+    move(1, "instant");
+});
 const distanceLimit = 60;
 for (let index = 0; index < sections.length; index++) {
-    if (window.innerWidth < 1024)
-        continue;
-    console.log("on");
     const item = items[index];
     const section = sections[index];
     let tick = 0;
     setInterval(() => {
         if (tick > 0)
             tick--;
-    }, 50);
+    }, 10);
     let interval;
     section.addEventListener("mouseenter", () => {
         if (tick > 0)
+            return;
+        if (window.innerWidth < 1024)
             return;
         item.style.position = "relative";
         section.style.position = "absolute";
@@ -62,9 +64,6 @@ for (let index = 0; index < sections.length; index++) {
                 x: destination.x - (center.x - absoluteCenter.x),
                 y: destination.y - (center.y - absoluteCenter.y),
             };
-            console.log(destDirection);
-            // console.log(destination);
-            // console.log(absoluteCenter);
             section.style.left = `${+section.style.left.replace("px", "") + (destDirection.x / 100)}px`;
             section.style.top = `${+section.style.top.replace("px", "") + (destDirection.y / 100)}px`;
         }, 10);
