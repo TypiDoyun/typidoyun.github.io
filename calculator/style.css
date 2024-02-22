@@ -131,30 +131,43 @@ main {
     height: calc(100% - 6px);
 }
 
-.pad {
+.pad:hover {
+    background-color: #ffffff21;
+}
+
+.pad, .pad:active {
     display: flex;
     align-items: center;
     justify-content: center;
 
     color: white;
     font-size: 15px;
-    background-color: #ffffff11;
+    background-color: #ffffff13;
 
     border-radius: 6px;
 }
 
-.pad:hover {
-    background-color: #ffffff21;
-}
-
-.pad.number {
-    background-color: #ffffff21;
-}
 
 .pad.number:hover {
-    background-color: #ffffff11;
+    background-color: #ffffff13;
 }
 
-.pad.answer {
+.pad.number, .pad.number:active {
+    background-color: #ffffff21;
+}
+
+.pad.answer:hover {
+    background-color: #3dc2ff2c;
+}
+
+.pad.answer, .pad.answer:active {
     background-color: #3dc2ff41;
+}
+
+.pad.symbol {
+    font-size: 19px;
+}
+
+.pad.zero {
+    grid-column: 2/4;
 }
