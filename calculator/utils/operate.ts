@@ -62,11 +62,11 @@ const operateFormula = (formula: string) => {
         } else {
             const regExps = [
                 /root(\d+(?:\.\d+)?)/g, // sqrt
-                /(\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g, // power
-                /(\d+(?:\.\d+)?)\*(\d+(?:\.\d+)?)/g, // multiply
-                /(\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)/g, // divide
-                /(\d+(?:\.\d+)?)\+(\d+(?:\.\d+)?)/g, // add
-                /(\d+(?:\.\d+)?)\-(\d+(?:\.\d+)?)/g, // sub
+                /(-?\d+(?:\.\d+)?)\^(\d+(?:\.\d+)?)/g, // power
+                /(-?\d+(?:\.\d+)?)\×(\d+(?:\.\d+)?)/g, // multiply
+                /(-?\d+(?:\.\d+)?)\÷(\d+(?:\.\d+)?)/g, // divide
+                /(-?\d+(?:\.\d+)?)\+(\d+(?:\.\d+)?)/g, // add
+                /(-?\d+(?:\.\d+)?)\-(\d+(?:\.\d+)?)/g, // sub
             ];
             while (regExps.some(regExp => regExp.test(formula))) {
                 formula = formula.replace(regExps[0], (_: string, a: string) => String(Math.sqrt(+a)));
@@ -83,6 +83,6 @@ const operateFormula = (formula: string) => {
     return operateFormula_(formula.replaceAll(" ", ""));
 }
 
-const abc = operateFormula("2 * root(2) * 3 * root(2)");
+const abc = operateFormula("(3-3)");
 
 console.log(abc);

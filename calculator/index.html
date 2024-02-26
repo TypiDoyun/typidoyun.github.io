@@ -10,6 +10,10 @@
     <!-- import css -->
     <link rel="stylesheet" href="style.css">
 
+    <!-- import ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
     <title>calculator</title>
 </head>
 <body>
@@ -29,40 +33,40 @@
             <hr>
         </header>
         <main>
-            <div class="result">
-                0
+            <div id="result">
+                <span id="formula">0</span>
                 <hr>
             </div>
             <div class="pad-section">
                 <div class="number-pad">
                     <div class="pad">%</div>
-                    <div class="pad">&lt;</div>
-                    <div class="pad">&gt;</div>
-                    <div class="pad">4</div>
-    
-                    <div class="pad">5</div>
-                    <div class="pad">6</div>
-                    <div class="pad">7</div>
-                    <div class="pad symbol">÷</div>
-    
-                    <div class="pad number">1</div>
-                    <div class="pad number">2</div>
-                    <div class="pad number">3</div>
-                    <div class="pad symbol">×</div>
-                    
-                    <div class="pad number">4</div>
-                    <div class="pad number">5</div>
-                    <div class="pad number">6</div>
-                    <div class="pad symbol">-</div>
-    
-                    <div class="pad number">7</div>
-                    <div class="pad number">8</div>
-                    <div class="pad number">9</div>
-                    <div class="pad symbol">+</div>
+                    <div class="pad" onclick="moveHead('left')">&lt;</div>
+                    <div class="pad" onclick="moveHead('right')">&gt;</div>
+                    <div class="pad symbol" onclick="backspace()"><ion-icon name="backspace-outline"></ion-icon></div>
     
                     <div class="pad">.</div>
-                    <div class="pad number zero">0</div>
-                    <div class="pad symbol answer">=</div>
+                    <div class="pad" onclick="addCharacter(`(`)">&#40;</div>
+                    <div class="pad" onclick="addCharacter(')')">&#41;</div>
+                    <div class="pad symbol" onclick="addCharacter('÷')">÷</div>
+    
+                    <div class="pad number" onclick="addCharacter('1')">1</div>
+                    <div class="pad number" onclick="addCharacter('2')">2</div>
+                    <div class="pad number" onclick="addCharacter('3')">3</div>
+                    <div class="pad symbol" onclick="addCharacter('×')">×</div>
+                    
+                    <div class="pad number" onclick="addCharacter('4')">4</div>
+                    <div class="pad number" onclick="addCharacter('5')">5</div>
+                    <div class="pad number" onclick="addCharacter('6')">6</div>
+                    <div class="pad symbol" onclick="addCharacter('-')">-</div>
+    
+                    <div class="pad number" onclick="addCharacter('7')">7</div>
+                    <div class="pad number" onclick="addCharacter('8')">8</div>
+                    <div class="pad number" onclick="addCharacter('9')">9</div>
+                    <div class="pad symbol" onclick="addCharacter('+')">+</div>
+    
+                    <div class="pad" onclick="addCharacter('.')">.</div>
+                    <div class="pad number zero" onclick="addCharacter('0')">0</div>
+                    <div class="pad symbol answer" onclick="getAnswer()">=</div>
                 </div>
             </div>
         </main>
