@@ -1,6 +1,7 @@
 const calculator = document.querySelector('.calculator') as HTMLDivElement;
 const buttons = Array.from(document.querySelectorAll('.button')) as HTMLSpanElement[];
-const formulaElement = document.getElementById('formula') as HTMLDivElement;
+const formulaElement = document.getElementById('formula') as HTMLSpanElement;
+const formulaCopyElement = document.getElementById('formula-copy') as HTMLSpanElement;
 
 for (const button of buttons) {
     button.addEventListener("click", clickEvent => {
@@ -52,10 +53,15 @@ const ratioList: number[] = [];
 const updateFormula = () => {
     if (formula === "") formula = "0";
 
-    const showedFormula = `${formula.slice(0, head)}|${formula.slice(head)}`
-        .replace(/\s*(×|÷|-|\+)\s*/g, " $1 ");
+    const temp = `${formula.slice(0, head)}{HeadPoint}${formula.slice(head)}`.replace(/\s*(×|÷|-|\+)\s*/g, " $1 ")
+    const showedFormula = temp.replace("{HeadPoint}", "");
+    const formulaCopy = temp.split("{HeadPoint}")[0];
+    const headIndex = temp.indexOf("{HeadPoint}");
 
-    formulaElement.textContent = showedFormula;
+    if (headIndex === -1) return;
+
+    formulaElement.innerHTML = showedFormula;
+    formulaCopyElement.innerHTML = `${formulaCopy.replaceAll(" ", "&nbsp;")}<span class="cursor">|</span>`;
 
     const ratio = 270 / formulaElement.clientWidth;
     if (ratio > 1) {
@@ -80,3 +86,16 @@ const getAnswer = () => {
     moveHead("none");
     updateFormula();
 }
+
+let isVisible = true;
+
+setInterval(() => {
+    const cursor = document.getElementsByClassName("cursor")[0] as HTMLSpanElement;
+
+    if (!cursor) return;
+
+    console.log("on");
+
+    cursor.style.color = `#ffffff${isVisible ? "00" : "FF"}`;
+    isVisible = !isVisible;
+}, 500);
