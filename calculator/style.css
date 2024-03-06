@@ -137,6 +137,8 @@ main {
     position: absolute;
     right: 0;
     transform: translateX(50%);
+    transition: color .25s ease;
+    font-weight: 100;
 }
 
 .pad-section {
