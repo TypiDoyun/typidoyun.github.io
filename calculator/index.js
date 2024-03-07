@@ -75,6 +75,10 @@ const addCharacter = (character) => {
         added = false;
         return a;
     })
+        .replace(/\)\d/g, (_, a) => {
+        added = false;
+        return ")";
+    })
         .replace(/^0+(\(|-|[0-9]+)/g, (_, a) => {
         added = false;
         return a;
@@ -111,16 +115,31 @@ const setCursorVisibility = (isVisible) => {
     const cursor = document.getElementsByClassName("cursor")[0];
     if (!cursor)
         return;
-    cursor.style.color = `#ffffff${isVisible ? "EE" : "05"}`;
-    const coupleIndex = findCouple(showedHead - 1, showedFormula);
-    if (coupleIndex === undefined)
-        return;
-    const [minIndex, maxIndex] = [Math.min(showedHead - 1, coupleIndex), Math.max(showedHead - 1, coupleIndex)];
-    const temp = `${showedFormula.slice(0, minIndex)}<span class="highlight">(</span>${showedFormula.slice(minIndex + 1, maxIndex)}<span class="highlight">)</span>${showedFormula.slice(maxIndex + 1)}`;
-    formulaElement.innerHTML = temp;
     const highlights = Array.from(document.getElementsByClassName("highlight"));
-    for (const highlight of highlights) {
-        highlight.style.backgroundColor = "#ffffff30";
+    cursor.style.color = `#ffffff${isVisible ? "EE" : "05"}`;
+    let coupleIndex = findCouple(showedHead - 1, showedFormula);
+    let minIndex, maxIndex;
+    if (coupleIndex !== undefined) {
+        [minIndex, maxIndex] = [Math.min(showedHead - 1, coupleIndex), Math.max(showedHead - 1, coupleIndex)];
+        const temp = `${showedFormula.slice(0, minIndex)}<span class="highlight">(</span>${showedFormula.slice(minIndex + 1, maxIndex)}<span class="highlight">)</span>${showedFormula.slice(maxIndex + 1)}`;
+        formulaElement.innerHTML = temp;
+        for (const highlight of highlights) {
+            highlight.style.backgroundColor = "#ffffff30";
+        }
+    }
+    const couples = findCouples(formula);
+    if (couples !== undefined) {
+        cursor.style.top = "50%";
+        cursor.innerHTML = "|";
+        for (const couple of couples) {
+            [minIndex, maxIndex] = [Math.min(couple[0], couple[1]), Math.max(couple[0], couple[1])];
+            if (head <= minIndex || head > maxIndex)
+                continue;
+            if (formula[minIndex - 1] !== "^")
+                continue;
+            cursor.style.top = "calc(50% - 3px)";
+            cursor.innerHTML = "<sup>|</sup>";
+        }
     }
 };
 let fontSize = 22;
@@ -131,7 +150,7 @@ const updateFormula = () => {
     const temp = `${formula.slice(0, head)}{HeadPoint}${formula.slice(head)}`
         .replace(/\s*(×|÷|-|\+)\s*/g, " $1 ")
         .replace(/\(\s-\s(\d+)/g, "(-$1")
-        .replace(/\^\((.+)\)/g, "<sup>$1</sup>")
+        .replace(/\^\(([^)]*)\)/g, "<sup>$1</sup>")
         .replaceAll(" ", "&nbsp;");
     showedFormula = temp.replace("{HeadPoint}", "");
     const formulaCopy = temp.split("{HeadPoint}")[0];
