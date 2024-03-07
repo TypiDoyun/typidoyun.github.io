@@ -20,7 +20,9 @@ const switchMode = (element: HTMLSpanElement) => {
 makeDragable(calculator);
 
 let formula = "0";
+let showedFormula = "0";
 let head = 1;
+let showedHead = 1;
 
 const backspace = () => {
     formula = formula.slice(0, head - 1) + formula.slice(head);
@@ -37,21 +39,74 @@ const moveHead = (direction: "right" | "left" | "none") => {
     updateFormula();
 }
 
+const findCouples = (formula: string): [ number, number? ][] | undefined => {
+    const stack: [ number, number? ][] = [];
+    const result: [ number, number ][] = [];
+
+    let index = -1;
+
+    for (const character of formula) {
+        index++;
+        if (character === "(") stack.push([ index, undefined ]);
+        if (character === ")") {
+            const couple = stack.pop();
+
+            if (!couple) return;
+
+            couple[1] = index;
+
+            result.push(couple as [ number, number ]);
+        }
+    }
+
+    if (stack.length === 0) return result;
+    else return;
+}
+
+const findCouple = (index: number, formula: string): number | undefined => {
+    const couples = findCouples(formula);
+    
+    if (!couples) return;
+
+    return couples.find(couple => couple[0] === index)?.[1] || couples.find(couple => couple[1] === index)?.[0];
+}
+
 const addCharacter = (character: string) => {
+
     formula = formula.slice(0, head) + character + formula.slice(head);
     let added = true;
     formula = formula
-        .replace(/([^0-9])0+(\(|-|[0-9]+)/g, (_: string, a: string, b: string) => {
+        .replace(/([^0-9\.])0+(\(|-|[0-9]+)/g, (_: string, a: string, b: string) => {
             added = false;
             return `${a}${b}`;
+        })
+        .replace(/([^0-9|\)])\^/g, (_: string, a: string) => {
+            added = false;
+            return a;
+        })
+        .replace(/^\^/g, (_: string, a: string) => {
+            added = false;
+            return a;
         })
         .replace(/^0+(\(|-|[0-9]+)/g, (_: string, a: string) => {
             added = false;
             return a;
         })
+        .replace(/(\d+)\(/g, (_: string, a: string) => {
+            added = false;
+            return a;
+        })
+        .replace(/\((?:×|÷|\+)/g, (_: string) => {
+            added = false;
+            return "(";
+        })
         .replace(/(×|÷|-|\+)(×|÷|-|\+)/g, (_: string, a: string, b: string) => {
             added = false;
             return b;
+        })
+        .replace(/^(×|÷|\+)/g, (_: string) => {
+            added = false;
+            return "";
         })
         .replace(/^\./g, (_: string) => {
             added = false;
@@ -60,36 +115,63 @@ const addCharacter = (character: string) => {
         .replace(/([^0-9]+)\./g, (_: string, a: string) => {
             added = false;
             return a;
-        });
+        })
     if (added) moveHead("right");
 
     updateFormula();
 }
 
+const setCursorVisibility = (isVisible: boolean) => {
+    const cursor = document.getElementsByClassName("cursor")[0] as HTMLSpanElement;
+    
+    if (!cursor) return;
+    
+    cursor.style.color = `#ffffff${isVisible ? "EE" : "05"}`;
+
+    const coupleIndex = findCouple(showedHead - 1, showedFormula);
+
+    if (coupleIndex === undefined) return;
+
+    const [ minIndex, maxIndex ] = [ Math.min(showedHead - 1, coupleIndex), Math.max(showedHead - 1, coupleIndex) ];
+
+    const temp = `${showedFormula.slice(0, minIndex)}<span class="highlight">(</span>${showedFormula.slice(minIndex + 1, maxIndex)}<span class="highlight">)</span>${showedFormula.slice(maxIndex + 1)}`;
+
+    formulaElement.innerHTML = temp;
+
+    const highlights = Array.from(document.getElementsByClassName("highlight")) as HTMLElement[];
+
+    for (const highlight of highlights) {
+        highlight.style.backgroundColor = "#ffffff30";
+    }
+}
+
 let fontSize = 22;
 const ratioList: number[] = [];
 
-const updateFormula = () => {
-    if (formula === "") formula = "0";
 
+const updateFormula = () => {
+    if (formula === "") formula = "0", head = 1;
     const temp = `${formula.slice(0, head)}{HeadPoint}${formula.slice(head)}`
         .replace(/\s*(×|÷|-|\+)\s*/g, " $1 ")
-        .replaceAll(" ", "&nbsp;");
-    const showedFormula = temp.replace("{HeadPoint}", "");
+        .replace(/\(\s-\s(\d+)/g, "(-$1")
+        .replace(/\^\((.+)\)/g, "<sup>$1</sup>")
+        .replaceAll(" ", "&nbsp;")
+    showedFormula = temp.replace("{HeadPoint}", "");
     const formulaCopy = temp.split("{HeadPoint}")[0];
     const headIndex = temp.indexOf("{HeadPoint}");
+    showedHead = headIndex;
 
     if (headIndex === -1) return;
 
     formulaElement.innerHTML = showedFormula;
     formulaCopyElement.innerHTML = `${formulaCopy}`;
     const cursorElement = document.createElement("span");
-
-    cursorElement.style.color = `#ffffff${isVisible ? "EE" : "05"}`;
     cursorElement.textContent = "|";
     cursorElement.classList.add("cursor");
 
     formulaCopyElement.appendChild(cursorElement);
+
+    setCursorVisibility(isVisible);
 
     const ratio = 270 / formulaElement.clientWidth;
     if (ratio > 1) {
@@ -119,18 +201,12 @@ const getAnswer = () => {
     updateFormula();
 }
 
-
 setInterval(() => {
-    const cursor = document.getElementsByClassName("cursor")[0] as HTMLSpanElement;
-
-    if (!cursor) return;
-
-    cursor.style.color = `#ffffff${isVisible ? "05" : "EE"}`;
     isVisible = !isVisible;
+    setCursorVisibility(isVisible);
 }, 500);
 
 addEventListener("keydown", eventData => {
-    console.log(eventData.key)
     switch (eventData.key) {
         case "ArrowLeft":
             moveHead("left");
@@ -146,6 +222,10 @@ addEventListener("keydown", eventData => {
         case ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"].find(key => key === eventData.key):
             addCharacter(eventData.key);
             break;
+
+        case ".":
+            addCharacter(".");
+            break;
         
         case "-":
             addCharacter("-");
@@ -158,6 +238,13 @@ addEventListener("keydown", eventData => {
             break;
         case "/":
             addCharacter("÷");
+            break;
+        
+        case "(":
+            addCharacter("(");
+            break;
+        case ")":
+            addCharacter(")");
             break;
 
         case "Enter":
