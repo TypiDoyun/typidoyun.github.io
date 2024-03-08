@@ -21,8 +21,8 @@ body {
     height: 600px;
 
     position: absolute;
-    left: 23%;
-    top: 30%;
+    left: 0;
+    top: 0;
 
     background: rgba(11, 28, 46, 0.8);
     border-radius: 10px;
