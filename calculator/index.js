@@ -20,17 +20,80 @@ let showedFormula = "0";
 let head = 1;
 let showedHead = 1;
 const backspace = () => {
+    if (formula[head - 1] === ")") {
+        const couple = findCouple(head - 1, formula);
+        if (couple !== undefined) {
+            const [min, max] = [Math.min(head - 1, couple), Math.max(head - 1, couple)];
+            if (formula[min - 1] === "^") {
+                formula = formula.slice(0, min - 1) + formula.slice(max + 1);
+                head = head - (max - min + 2);
+                if (!addCharacter(""))
+                    moveHead("left");
+                updateFormula();
+                return;
+            }
+        }
+    }
+    if (formula[head - 1] === "(" && formula[head - 2] === "^") {
+        const couple = findCouple(head - 1, formula);
+        if (couple !== undefined) {
+            const [min, max] = [Math.min(head - 1, couple), Math.max(head - 1, couple)];
+            formula = formula.slice(0, min - 1) + formula.slice(min + 1, max) + formula.slice(max + 1);
+            head = head - 2;
+            if (!addCharacter(""))
+                moveHead("left");
+            updateFormula();
+            return;
+        }
+    }
+    if (formula[head - 1] === "(" || formula[head - 1] === ")") {
+        const couple = findCouple(head - 1, formula);
+        if (couple !== undefined) {
+            const [min, max] = [Math.min(head - 1, couple), Math.max(head - 1, couple)];
+            formula = formula.slice(0, min) + formula.slice(min + 1, max) + formula.slice(max + 1);
+            head = head - 2;
+            if (!addCharacter(""))
+                moveHead("left");
+            updateFormula();
+            return;
+        }
+    }
     formula = formula.slice(0, head - 1) + formula.slice(head);
+    addCharacter("");
     moveHead("left");
     updateFormula();
 };
-const moveHead = (direction) => {
+const addSquare = (value) => {
+    const temp = formula;
+    let success = addCharacter(`^(${value ?? ""})`);
+    if (!success)
+        formula = temp;
+    else
+        moveHead("left");
+    updateFormula();
+};
+const addBracket = () => {
+    const temp = formula;
+    let success = addCharacter(`(`);
+    success = success && addCharacter(')');
+    if (!success)
+        formula = temp;
+    else
+        moveHead("left");
+    updateFormula();
+};
+const moveHead = (direction, backspaceMode = false) => {
+    let value = 0;
     if (direction === "right")
-        head++;
+        value++;
     else if (direction === "left")
-        head--;
+        value--;
+    head += value;
+    if (!backspaceMode && formula[head - 1] === "^")
+        head += value;
     head = Math.max(0, Math.min(formula.length, head));
     updateFormula();
+    return true;
 };
 const findCouples = (formula) => {
     const stack = [];
@@ -62,60 +125,68 @@ const findCouple = (index, formula) => {
 const addCharacter = (character) => {
     formula = formula.slice(0, head) + character + formula.slice(head);
     let added = true;
+    let move = true;
     formula = formula
         .replace(/([^0-9\.])0+(\(|-|[0-9]+)/g, (_, a, b) => {
         added = false;
         return `${a}${b}`;
     })
         .replace(/([^0-9|\)])\^/g, (_, a) => {
-        added = false;
+        added = move = false;
         return a;
     })
         .replace(/^\^/g, (_, a) => {
-        added = false;
+        added = move = false;
         return a;
     })
         .replace(/\)\d/g, (_, a) => {
-        added = false;
+        added = move = false;
         return ")";
     })
         .replace(/^0+(\(|-|[0-9]+)/g, (_, a) => {
-        added = false;
+        move = false;
         return a;
     })
         .replace(/(\d+)\(/g, (_, a) => {
-        added = false;
+        added = move = false;
         return a;
     })
         .replace(/\((?:×|÷|\+)/g, (_) => {
-        added = false;
+        added = move = false;
         return "(";
     })
         .replace(/(×|÷|-|\+)(×|÷|-|\+)/g, (_, a, b) => {
-        added = false;
+        added = move = false;
         return b;
     })
         .replace(/^(×|÷|\+)/g, (_) => {
-        added = false;
+        added = move = false;
         return "";
     })
         .replace(/^\./g, (_) => {
-        added = false;
+        added = move = false;
         return "";
     })
         .replace(/([^0-9]+)\./g, (_, a) => {
-        added = false;
+        added = move = false;
+        return a;
+    })
+        .replace(/(\.\d*)\./g, (_, a) => {
+        added = move = false;
         return a;
     });
-    if (added)
-        moveHead("right");
+    if (move) {
+        for (let i = 0; i < character.length; i++) {
+            moveHead("right");
+        }
+    }
     updateFormula();
+    return added;
 };
 const setCursorVisibility = (isVisible) => {
     const cursor = document.getElementsByClassName("cursor")[0];
     if (!cursor)
         return;
-    const highlights = Array.from(document.getElementsByClassName("highlight"));
     cursor.style.color = `#ffffff${isVisible ? "EE" : "05"}`;
     let coupleIndex = findCouple(showedHead - 1, showedFormula);
     let minIndex, maxIndex;
@@ -123,6 +194,7 @@ const setCursorVisibility = (isVisible) => {
         [minIndex, maxIndex] = [Math.min(showedHead - 1, coupleIndex), Math.max(showedHead - 1, coupleIndex)];
         const temp = `${showedFormula.slice(0, minIndex)}<span class="highlight">(</span>${showedFormula.slice(minIndex + 1, maxIndex)}<span class="highlight">)</span>${showedFormula.slice(maxIndex + 1)}`;
         formulaElement.innerHTML = temp;
+        const highlights = Array.from(document.getElementsByClassName("highlight"));
         for (const highlight of highlights) {
             highlight.style.backgroundColor = "#ffffff30";
         }
@@ -147,14 +219,34 @@ const ratioList = [];
 const updateFormula = () => {
     if (formula === "")
         formula = "0", head = 1;
-    const temp = `${formula.slice(0, head)}{HeadPoint}${formula.slice(head)}`
+    let temp = `${formula.slice(0, head)}{HeadPoint}${formula.slice(head)}`
         .replace(/\s*(×|÷|-|\+)\s*/g, " $1 ")
-        .replace(/\(\s-\s(\d+)/g, "(-$1")
-        .replace(/\^\(([^)]*)\)/g, "<sup>$1</sup>")
+        .replace(/\(\s-\s(\d+)/g, "(-$1");
+    let nextIndex = 0;
+    let text = "";
+    temp
+        .split("")
+        .forEach((char, index) => {
+        if (index < nextIndex)
+            return;
+        nextIndex++;
+        if (char !== "^")
+            return text += char;
+        if (temp[index + 1] !== "(")
+            return text += char;
+        const couple = findCouple(index + 1, temp);
+        if (couple === undefined)
+            return text += char;
+        const [min, max] = [Math.min(index + 1, couple), Math.max(index + 1, couple)];
+        text += `<sup>${temp.slice(min + 1, max)}</sup>`;
+        nextIndex = max + 1;
+        return temp[index];
+    });
+    text = text
         .replaceAll(" ", "&nbsp;");
-    showedFormula = temp.replace("{HeadPoint}", "");
-    const formulaCopy = temp.split("{HeadPoint}")[0];
-    const headIndex = temp.indexOf("{HeadPoint}");
+    showedFormula = text.replace("{HeadPoint}", "");
+    const formulaCopy = text.split("{HeadPoint}")[0];
+    const headIndex = text.indexOf("{HeadPoint}");
     showedHead = headIndex;
     if (headIndex === -1)
         return;
@@ -186,6 +278,7 @@ const getAnswer = () => {
     if (result === undefined || isNaN(result))
         return;
     formula = `${result}`;
+    head = formula.length;
     moveHead("none");
     updateFormula();
 };
@@ -222,11 +315,11 @@ addEventListener("keydown", eventData => {
         case "/":
             addCharacter("÷");
             break;
-        case "(":
-            addCharacter("(");
+        case "^":
+            addSquare();
             break;
-        case ")":
-            addCharacter(")");
+        case "(":
+            addBracket();
             break;
         case "Enter":
             getAnswer();
