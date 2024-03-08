@@ -81,6 +81,7 @@ const operateFormula = (formula: string) => {
 
             for (const [ innerFormula, isMinus ] of getInnerFormulas(formula)!) {
                 const result = operateFormula_(innerFormula);
+                console.log(innerFormula, result);
                 if (result === undefined) formula = "NaN";
                 else if (isMinus) {
                     formula = formula.replaceAll(`-(${innerFormula})`, convert(-result));
@@ -92,6 +93,7 @@ const operateFormula = (formula: string) => {
                     .replaceAll("+-", "-")
                     .replaceAll("++", "+")
                     .replaceAll("--", "+")
+                
             }
             return operateFormula(formula);
         } else {
@@ -106,10 +108,10 @@ const operateFormula = (formula: string) => {
             while (regExps.some(regExp => regExp.test(formula))) {
                 formula = formula.replace(regExps[0], (_: string, a: string) => convert(Math.sqrt(+a)));
                 formula = formula.replace(regExps[1], (_: string, a: string, b: string) => convert((+a) ** +b));
-                formula = formula.replace(regExps[1], (_: string, a: string, b: string) => convert(+a * +b));
-                formula = formula.replace(regExps[2], (_: string, a: string, b: string) => convert(+a / +b));
-                formula = formula.replace(regExps[3], (_: string, a: string, b: string) => convert(+a + +b));
-                formula = formula.replace(regExps[4], (_: string, a: string, b: string) => convert(+a - +b));
+                formula = formula.replace(regExps[2], (_: string, a: string, b: string) => convert(+a * +b));
+                formula = formula.replace(regExps[3], (_: string, a: string, b: string) => convert(+a / +b));
+                formula = formula.replace(regExps[4], (_: string, a: string, b: string) => convert(+a + +b));
+                formula = formula.replace(regExps[5], (_: string, a: string, b: string) => convert(+a - +b));
             }
             return +formula;
         }
@@ -120,6 +122,6 @@ const operateFormula = (formula: string) => {
 
 // const abc = operateFormula("12 - 3 - 4 - (-3 - 3)");
 // const abc = operateFormula("12-3-4-(-3 - 3 + (-3))");
-const abc = operateFormula("-(-3)^2");
+const abc = operateFormula("1+1");
 
 console.log(abc);
