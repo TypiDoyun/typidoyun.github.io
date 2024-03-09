@@ -1,3 +1,4 @@
+"use strict";
 const calculator = document.querySelector('.calculator');
 const buttons = Array.from(document.querySelectorAll('.button'));
 const formulaElement = document.getElementById('formula');
@@ -50,17 +51,21 @@ const backspace = () => {
         const couple = findCouple(head - 1, formula);
         if (couple !== undefined) {
             const [min, max] = [Math.min(head - 1, couple), Math.max(head - 1, couple)];
+            if (formula[head - 1] === "(")
+                head += 1;
             formula = formula.slice(0, min) + formula.slice(min + 1, max) + formula.slice(max + 1);
-            head = head - 2;
-            if (!addCharacter(""))
-                moveHead("left");
+            head -= 2;
+            addCharacter("");
             updateFormula();
             return;
         }
     }
-    formula = formula.slice(0, head - 1) + formula.slice(head);
-    addCharacter("");
+    formula = formula.slice(0, Math.max(0, head - 1)) + formula.slice(head);
     moveHead("left");
+    if (formula === "") {
+        formula = "0";
+        head = 1;
+    }
     updateFormula();
 };
 const addSquare = (value) => {
@@ -82,14 +87,14 @@ const addBracket = () => {
         moveHead("left");
     updateFormula();
 };
-const moveHead = (direction, backspaceMode = false) => {
+const moveHead = (direction, userMode = false) => {
     let value = 0;
     if (direction === "right")
         value++;
     else if (direction === "left")
         value--;
     head += value;
-    if (!backspaceMode && formula[head - 1] === "^")
+    if (userMode && formula[head - 1] === "^")
         head += value;
     head = Math.max(0, Math.min(formula.length, head));
     updateFormula();
@@ -128,7 +133,7 @@ const addCharacter = (character) => {
     let move = true;
     formula = formula
         .replace(/([^0-9\.])0+(\(|-|[0-9]+)/g, (_, a, b) => {
-        added = false;
+        added = move = false;
         return `${a}${b}`;
     })
         .replace(/([^0-9|\)])\^/g, (_, a) => {
@@ -210,15 +215,19 @@ const setCursorVisibility = (isVisible) => {
             if (formula[minIndex - 1] !== "^")
                 continue;
             cursor.style.top = "calc(50% - 3px)";
-            cursor.innerHTML = "<sup>|</sup>";
+            cursor.innerHTML = `<sup style="font-size: ${supFontSize}px">|</sup>`;
         }
     }
 };
 let fontSize = 22;
+let supFontSize = 12;
 const ratioList = [];
 const updateFormula = () => {
-    if (formula === "")
-        formula = "0", head = 1;
+    if (formula === "") {
+        formula = "0";
+        head = 1;
+        return;
+    }
     let temp = `${formula.slice(0, head)}{HeadPoint}${formula.slice(head)}`
         .replace(/\s*(×|÷|-|\+)\s*/g, " $1 ")
         .replace(/\(\s-\s(\d+)/g, "(-$1");
@@ -238,12 +247,13 @@ const updateFormula = () => {
         if (couple === undefined)
             return text += char;
         const [min, max] = [Math.min(index + 1, couple), Math.max(index + 1, couple)];
-        text += `<sup>${temp.slice(min + 1, max)}</sup>`;
+        text += `<sup\\sstyle="font-size:\\s${supFontSize}px">${temp.slice(min + 1, max)}</sup>`;
         nextIndex = max + 1;
         return temp[index];
     });
     text = text
-        .replaceAll(" ", "&nbsp;");
+        .replaceAll(" ", "&nbsp;")
+        .replaceAll("\\s", " ");
     showedFormula = text.replace("{HeadPoint}", "");
     const formulaCopy = text.split("{HeadPoint}")[0];
     const headIndex = text.indexOf("{HeadPoint}");
@@ -258,25 +268,31 @@ const updateFormula = () => {
     formulaCopyElement.appendChild(cursorElement);
     setCursorVisibility(isVisible);
     const ratio = 270 / formulaElement.clientWidth;
-    if (ratio > 1) {
-        if (ratioList.length === 0)
-            return;
-        fontSize /= ratioList.pop();
-        formulaElement.style.fontSize = `${fontSize.toFixed(2)}px`;
-        cursorElement.style.fontSize = `${fontSize.toFixed(2)}px`;
-        formulaCopyElement.style.fontSize = `${fontSize.toFixed(2)}px`;
-        return;
-    }
-    ratioList.push(ratio);
-    fontSize *= ratio;
+    // if (ratio > 1) {
+    //     console.log(ratio, ratioList);
+    //     if (ratioList.length === 0) return;
+    //     fontSize /= ratioList.pop()!;
+    //     formulaElement.style.fontSize = `${fontSize.toFixed(2)}px`;
+    //     cursorElement.style.fontSize = `${fontSize.toFixed(2)}px`;
+    //     formulaCopyElement.style.fontSize = `${fontSize.toFixed(2)}px`;
+    //     return;
+    // }
+    // ratioList.push(ratio);
+    fontSize = Math.min(22, fontSize * ratio);
     formulaElement.style.fontSize = `${fontSize.toFixed(2)}px`;
     cursorElement.style.fontSize = `${fontSize.toFixed(2)}px`;
     formulaCopyElement.style.fontSize = `${fontSize.toFixed(2)}px`;
+    const sups = Array.from(document.getElementsByTagName("sup"));
+    supFontSize = Math.min(12, supFontSize * ratio);
+    for (const sup of sups) {
+        sup.style.fontSize = `${supFontSize}px`;
+    }
 };
 const getAnswer = () => {
     const result = operateFormula(formula);
     if (result === undefined || isNaN(result))
         return;
+    console.log(result);
     formula = `${result}`;
     head = formula.length;
     moveHead("none");
@@ -289,10 +305,10 @@ setInterval(() => {
 addEventListener("keydown", eventData => {
     switch (eventData.key) {
         case "ArrowLeft":
-            moveHead("left");
+            moveHead("left", true);
             break;
         case "ArrowRight":
-            moveHead("right");
+            moveHead("right", true);
             break;
         case "Backspace":
             backspace();

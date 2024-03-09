@@ -1,3 +1,4 @@
+"use strict";
 const makeDragable = (element) => {
     let isHolding = false;
     const startPosition = {

@@ -3,6 +3,7 @@ const parentheses = [ "(", ")" ];
 const isParentheses = (character: string) => parentheses.includes(character);
 
 const isValidFormula = (formula: string) => {
+    if (formula === "") return false;
     let amountOfparentheses = 0;
     let isValid = true;
 
@@ -70,8 +71,10 @@ const operateFormula = (formula: string) => {
         if (!isValidFormula(formula)) return undefined;
         if (hasInnerFormula(formula)) {
             const powerReg = /\(((?:-|\+)?\d+(?:\.\d+)?)\)\^((?:-|\+)?\d+(?:\.\d+)?)/g; // power
+            const powerReg2 = /\(((?:-|\+)?\d+(?:\.\d+)?)\)\^\(((?:-|\+)?\d+(?:\.\d+)?)\)/g; // power
 
             if (powerReg.test(formula)) formula = formula.replace(powerReg, (_: string, a: string, b: string) => convert((+a) ** +b));
+            if (powerReg2.test(formula)) formula = formula.replace(powerReg2, (_: string, a: string, b: string) => convert((+a) ** +b));
 
             formula = formula
                 .replaceAll("-+", "-")
@@ -81,7 +84,6 @@ const operateFormula = (formula: string) => {
 
             for (const [ innerFormula, isMinus ] of getInnerFormulas(formula)!) {
                 const result = operateFormula_(innerFormula);
-                console.log(innerFormula, result);
                 if (result === undefined) formula = "NaN";
                 else if (isMinus) {
                     formula = formula.replaceAll(`-(${innerFormula})`, convert(-result));
@@ -119,9 +121,3 @@ const operateFormula = (formula: string) => {
 
     return operateFormula_(formula.replaceAll(" ", ""));
 }
-
-// const abc = operateFormula("12 - 3 - 4 - (-3 - 3)");
-// const abc = operateFormula("12-3-4-(-3 - 3 + (-3))");
-const abc = operateFormula("1+1");
-
-console.log(abc);
