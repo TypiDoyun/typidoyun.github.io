@@ -1,4 +1,3 @@
-"use strict";
 const parentheses = ["(", ")"];
 const isParentheses = (character) => parentheses.includes(character);
 const isValidFormula = (formula) => {
@@ -98,11 +97,11 @@ const operateFormula = (formula) => {
         }
         else {
             const regExps = [
-                /root(\d+(?:\.\d+)?)/g,
-                /((?:-|\+)?\d+(?:\.\d+)?)\^((?:-|\+)?\d+(?:\.\d+)?)/g,
-                /((?:-|\+)?\d+(?:\.\d+)?)\×((?:-|\+)?\d+(?:\.\d+)?)/g,
-                /((?:-|\+)?\d+(?:\.\d+)?)\÷((?:-|\+)?\d+(?:\.\d+)?)/g,
-                /((?:-|\+)?\d+(?:\.\d+)?)\+((?:-|\+)?\d+(?:\.\d+)?)/g,
+                /root(\d+(?:\.\d+)?)/g, // sqrt
+                /((?:-|\+)?\d+(?:\.\d+)?)\^((?:-|\+)?\d+(?:\.\d+)?)/g, // power
+                /((?:-|\+)?\d+(?:\.\d+)?)\×((?:-|\+)?\d+(?:\.\d+)?)/g, // multiply
+                /((?:-|\+)?\d+(?:\.\d+)?)\÷((?:-|\+)?\d+(?:\.\d+)?)/g, // divide
+                /((?:-|\+)?\d+(?:\.\d+)?)\+((?:-|\+)?\d+(?:\.\d+)?)/g, // add
                 /((?:-|\+)?\d+(?:\.\d+)?)\-((?:-|\+)?\d+(?:\.\d+)?)/g, // sub
             ];
             while (regExps.some(regExp => regExp.test(formula))) {

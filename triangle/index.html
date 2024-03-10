@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="style.css">
+
+    <title>Triangle</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+
+    <script src="utils/vector.js"></script>
+    <script src="utils/draw.js"></script>
+    <script src="index.js"></script>
+    <script>
+        window.onload = () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            main();
+        }
+    </script>
+</body>
+</html>
