@@ -2,10 +2,10 @@ const canvas = document.getElementById("canvas") as HTMLCanvasElement;
 const context = canvas.getContext("2d");
 const framePerSecond = 40;
 const milisecondPerFrame = 1000 / framePerSecond;
-let tauPerSecond = 1;
+let tauPerSecond = 2;
 
 const main = () => {
-    const size = 250;
+    const size = 500;
     const center = new Vector(canvas.width / 2, canvas.height / 2);
     
     const startTime = Date.now();
@@ -35,9 +35,6 @@ const main = () => {
         ).add(center);
 
         drawDot(context, dot, 2);
-        // drawLine(context, dot, abCenter);
-        // drawLine(context, dot, bcCenter);
-        // drawLine(context, dot, caCenter);
         
         let abLine = center.fromOrigin(abCenter);
         let bcLine = center.fromOrigin(bcCenter);
@@ -54,7 +51,7 @@ const main = () => {
         drawLine(context, dot, bcLine.add(bcCenter), "#8F8");
         drawLine(context, dot, caLine.add(caCenter), "#88F");
 
-        const maxLength = size * Math.sqrt(3) / 2;
+        // const maxLength = size * Math.sqrt(3) / 2;
         const bar = new Vector(canvas.width * 3 / 4, center.y + size * Math.sqrt(3) / 6);
         
         const abBar = new Vector(bar.x, bar.y - abLine.length);
@@ -65,8 +62,8 @@ const main = () => {
         drawLine(context, bcBar, caBar, "#00F");
         drawDot(context, bar, 2);
         drawDot(context, caBar, 2);
+        drawDot(context, center);
 
-        // console.log(`deltaTime: ${String(deltaTime).padEnd(2, " ")}, deltaConstant: ${String(deltaConstant).padEnd(4, " ")}, angle: ${String(angle / 1000).padStart(3, " ")}`);
     }, milisecondPerFrame);
 }
 
@@ -83,5 +80,5 @@ addEventListener("keyup", eventData => {
     
     if (key !== " ") return;
 
-    tauPerSecond = 1;
+    tauPerSecond = 2;
 });
