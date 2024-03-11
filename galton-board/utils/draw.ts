@@ -35,7 +35,7 @@ const drawTree = (context: CanvasRenderingContext2D, tree: Tree): Tree => {
 
 const drawGuideLine = (context: CanvasRenderingContext2D, width: number, height: number) => {
     for (let x = 0; x <= width; x++) {
-        const graphX = (x - width / 2) * (18 / width);
+        const graphX = (x - width / 2) * (18 / 934);
         const y = Math.pow(Math.E, -(graphX ** 2) / 2) / (2 * Math.PI) * 1800;
 
         const vector = new Vector(x, height - y);
