@@ -1,4 +1,3 @@
-"use strict";
 const calculator = document.querySelector('.calculator');
 const buttons = Array.from(document.querySelectorAll('.button'));
 const formulaElement = document.getElementById('formula');
