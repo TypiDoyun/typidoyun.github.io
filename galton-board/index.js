@@ -10,7 +10,7 @@ const factorial = (n) => {
 const main = async () => {
     const tree = makeTree(35);
     start(tree);
-    for (let i = 0; i < 2400; i++) {
+    for (let i = 0; i < 2200; i++) {
         await new Promise((resolve, reject) => {
             setTimeout(() => {
                 dropBall(tree);
@@ -101,7 +101,7 @@ const dropBall = (tree) => {
     };
     ball.addAnimation({
         xRange: [0, 1],
-        time: 1,
+        time: 0.2,
         update(x) {
             return new Vector(canvas.width / 2, (x ** 2) * root.getVector().y);
         },
