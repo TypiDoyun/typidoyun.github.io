@@ -1,5 +1,5 @@
 const ballSize = 1.5;
-const framePerSecond = 40;
+const framePerSecond = 60;
 const milisecondPerFrame = 1000 / framePerSecond;
 const balls = new Set();
 const startTime = Date.now();

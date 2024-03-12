@@ -19,9 +19,6 @@ const main = async () => {
         });
     }
     console.log(factorial(3));
-    // for (let i = 0; i < 500; i++) {
-    //     dropBall(tree);
-    // }
 };
 const makeTree = (height) => {
     const tree = new Tree(new TreeNode(new Vector(canvas.width / 2, 50), "Root"));
