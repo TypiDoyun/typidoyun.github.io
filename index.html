@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="style.css" />
 
+
         <title>Typidoyun</title>
     </head>
     <body>
@@ -128,7 +129,10 @@
         <script src="spinning-circle/utils/vector.js"></script>
         <script src="spinning-circle/index.js"></script>
         <script src="index.js"></script>
+        <script src="shader.js"></script>
         <script>
+            
+
             window.onload = () => {
                 const rotateStep = new Vector(
                     toRadians(13),
@@ -138,8 +142,8 @@
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
 
-                initialize(6);
-                render(290, 0.75, 120, 300, [155, 155, 155], rotateStep);
+                // initialize(6);
+                // render(290, 0.75, 120, 300, [155, 155, 155], rotateStep);
             };
             window.onresize = () => {
                 canvas.width = window.innerWidth;
@@ -156,7 +160,7 @@
         ></script>
     </body>
 </html>
-
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -284,4 +288,4 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
-</html>
+</html> -->

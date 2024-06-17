@@ -79,7 +79,7 @@ for (let index = 0; index < sections.length; index++) {
             }
     
             section.style.left = `${+section.style.left.replace("px", "") + (destDirection.x / 100)}px`;
-            section.style.top = `${+section.style.top.replace("px", "") + (destDirection.y / 100)}px`;
+            section.style.top = `${+section.style.top.replace("px", "") + (destDirection.y / 50)}px`;
 
         }, 10);
     });
