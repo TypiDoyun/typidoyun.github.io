@@ -16,12 +16,10 @@ export var Random;
         return shuffled.slice(0, n);
     };
     Random.pseudoRandom = (seed) => {
-        const a = 1664525;
-        const c = 1013904223;
-        const m = 4294967296;
+        let x = Math.sin(seed) * 10000;
         return () => {
-            seed = (a * seed + c) % m;
-            return seed / m;
+            x = Math.sin(x) * 10000;
+            return x - Math.floor(x);
         };
     };
 })(Random || (Random = {}));

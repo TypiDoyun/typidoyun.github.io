@@ -15,13 +15,10 @@ export namespace Random {
         return shuffled.slice(0, n);
     }
     export const pseudoRandom = (seed: number) => {
-        const a = 1664525;
-        const c = 1013904223;
-        const m = 4294967296;
-      
+        let x = Math.sin(seed) * 10000;
         return () => {
-            seed = (a * seed + c) % m;
-            return seed / m;
-        };
+            x = Math.sin(x) * 10000;
+            return x - Math.floor(x);
+        }
     }
 }

@@ -7,6 +7,19 @@ const layer = document.getElementById("layer");
 const board = new Board(5, 5);
 let dragging = false;
 let dragType = BlockType.Stone;
+window.addEventListener("keypress", eventData => {
+    const { key } = eventData;
+    switch (key) {
+        case "Enter":
+            submit();
+            break;
+        case "r":
+            updateBoard();
+            break;
+        default:
+            console.log(key);
+    }
+});
 boardElement.oncontextmenu = event => {
     event.preventDefault();
 };
