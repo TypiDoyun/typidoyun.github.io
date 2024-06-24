@@ -50,9 +50,47 @@ export class Board {
             for (let j = 0; j < this._cols; j++) {
                 if (rand() >= 0.5)
                     continue;
-                console.log("Placing stone at", i, j);
                 this.set(i, j, BlockType.Stone);
             }
         }
+        console.log(this._board);
+    }
+    getRowAnswers() {
+        const answers = [];
+        for (let i = 0; i < this._rows; i++) {
+            let answer = [];
+            let count = 0;
+            for (let j = 0; j < this._cols; j++) {
+                if (this._board[i][j] === BlockType.Stone)
+                    count++;
+                if (count !== 0 && this._board[i][j] === BlockType.Empty) {
+                    answer.push(count);
+                    count = 0;
+                }
+            }
+            if (count !== 0)
+                answer.push(count);
+            answers.push(answer);
+        }
+        return answers;
+    }
+    getColAnswers() {
+        const answers = [];
+        for (let j = 0; j < this._cols; j++) {
+            let answer = [];
+            let count = 0;
+            for (let i = 0; i < this._rows; i++) {
+                if (this._board[i][j] === BlockType.Stone)
+                    count++;
+                if (count !== 0 && this._board[i][j] === BlockType.Empty) {
+                    answer.push(count);
+                    count = 0;
+                }
+            }
+            if (count !== 0)
+                answer.push(count);
+            answers.push(answer);
+        }
+        return answers;
     }
 }
