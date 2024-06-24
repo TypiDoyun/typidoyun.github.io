@@ -48,12 +48,12 @@ export class Board {
         const rand = Random.pseudoRandom(seed);
         for (let i = 0; i < this._rows; i++) {
             for (let j = 0; j < this._cols; j++) {
+                this.set(i, j, BlockType.Empty);
                 if (rand() >= 0.5)
                     continue;
                 this.set(i, j, BlockType.Stone);
             }
         }
-        console.log(this._board);
     }
     getRowAnswers() {
         const answers = [];

@@ -2,6 +2,7 @@ import { BlockType, Board } from "../classes/board.js";
 import { Random } from "../utils/random.js";
 const dropdown = document.getElementById("dropdown");
 const submitButton = document.getElementById("done");
+const retryButton = document.getElementById("retry");
 const boardElement = document.getElementById("board");
 const layer = document.getElementById("layer");
 const board = new Board(5, 5);
@@ -34,11 +35,11 @@ const backgroundAnimation = [
 const animation = [
     { transform: "translate(0, 0) rotate(0deg)" },
     { transform: "translate(5px, 5px) rotate(2deg)" },
-    { transform: "translate(0, 0) rotate(0eg)" },
+    { transform: "translate(0, 0) rotate(0deg)" },
     { transform: "translate(-5px, 5px) rotate(-2deg)" },
     { transform: "translate(0, 0) rotate(0deg)" },
     { transform: "translate(5px, 5px) rotate(2deg)" },
-    { transform: "translate(0, 0) rotate(0eg)" },
+    { transform: "translate(0, 0) rotate(0deg)" },
     { transform: "translate(-5px, 5px) rotate(-2deg)" },
     { transform: "translate(0, 0) rotate(0deg)" }
 ];
@@ -100,12 +101,17 @@ const submit = () => {
         });
     }
     else {
+        timeTicking = false;
+        record = Date.now();
         layer.style.backgroundColor = "#0e0";
         layer.animate(backgroundAnimation, {
             duration: 500,
             easing: "ease"
         });
     }
+};
+retryButton.onclick = () => {
+    updateBoard();
 };
 submitButton.onclick = () => {
     submit();
@@ -271,7 +277,20 @@ const setBlock = (block, type) => {
         bottom.style.zIndex = `${4 - connectedCount}`;
     }
 };
+let startTime = Date.now();
+let record;
+let timeTicking = true;
+const time = document.getElementById("time");
+setInterval(() => {
+    const d = (timeTicking ? Date.now() : record) - startTime;
+    const minutes = (d / 60000).toFixed(0).padStart(2, "0");
+    const seconds = ((d % 60000) / 1000).toFixed(0).padStart(2, "0");
+    const ms = (d % 1000 / 10).toFixed(0).padStart(2, "0");
+    time.innerText = `${minutes}:${seconds}:${ms}`;
+});
 const updateBoard = () => {
+    timeTicking = true;
+    startTime = Date.now();
     board.placeStones(Random.randInt(1, 1000000));
     setCSSProperty("--board-rows", board.rows.toString());
     setCSSProperty("--board-cols", board.cols.toString());
@@ -279,6 +298,10 @@ const updateBoard = () => {
     setCSSProperty("--block-gap", `${12 / (Math.max(board.rows, board.cols) / 5)}px`);
     for (const child of [...boardElement.children]) {
         if (child.id === "done")
+            continue;
+        if (child.id === "retry")
+            continue;
+        if (child.id === "buttons")
             continue;
         boardElement.removeChild(child);
     }
