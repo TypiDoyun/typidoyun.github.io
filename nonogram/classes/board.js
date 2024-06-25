@@ -48,6 +48,7 @@ export class Board {
         this._rows = rows;
         this._cols = cols;
         this._board = new Array(rows).fill(false).map(() => new Array(cols).fill(0));
+        this._elementBoard = new Array(rows).fill(false).map(() => new Array(cols).fill(null));
     }
     placeStones(seed) {
         const rand = Random.pseudoRandom(seed);

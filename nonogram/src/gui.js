@@ -216,6 +216,7 @@ setInterval(() => {
     time.innerText = `${minutes}:${seconds}:${ms}`;
 });
 export const drawBoard = (board) => {
+    console.log(board.board);
     startTime = Date.now();
     timeTicking = true;
     const seed = Random.randInt(1, 10000000);
