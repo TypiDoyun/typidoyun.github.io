@@ -8,16 +8,22 @@ export enum BlockType {
 
 export class Board {
     private _board: BlockType[][];
+    private _elementBoard: HTMLDivElement[][];
 
     constructor(
         private _rows: number,
         private _cols: number
     ) {
         this._board = new Array(_rows).fill(false).map(() => new Array(_cols).fill(0));
+        this._elementBoard = new Array(_rows).fill(false).map(() => new Array(_cols).fill(null));
     }
 
     public get board() {
         return this._board;
+    }
+
+    public get element() {
+        return this._elementBoard;
     }
 
     public get rows() {
@@ -71,7 +77,7 @@ export class Board {
             let count = 0;
             for (let j = 0; j < this._cols; j++) {
                 if (this._board[i][j] === BlockType.Stone) count++;
-                if (count !== 0 && this._board[i][j] === BlockType.Empty) {
+                if (count !== 0 && this._board[i][j] !== BlockType.Stone) {
                     answer.push(count);
                     count = 0;
                 }
@@ -90,7 +96,7 @@ export class Board {
             let count = 0;
             for (let i = 0; i < this._rows; i++) {
                 if (this._board[i][j] === BlockType.Stone) count++;
-                if (count !== 0 && this._board[i][j] === BlockType.Empty) {
+                if (count !== 0 && this._board[i][j] !== BlockType.Stone) {
                     answer.push(count);
                     count = 0;
                 }
@@ -98,6 +104,45 @@ export class Board {
             if (count !== 0) answer.push(count);
             answers.push(answer);
         }
+        return answers;
+    }
+
+    public getRowElementAnswers() {
+        const answers: number[][] = [];
+        for (let i = 0; i < this._rows; i++) {
+            let answer: number[] = [];
+            let count = 0;
+            for (let j = 0; j < this._cols; j++) {
+                const element = this._elementBoard[i][j];
+                if (element.classList.contains("stone")) count++;
+                if (count !== 0 && !element.classList.contains("stone")) {
+                    answer.push(count);
+                    count = 0;
+                }
+            }
+            if (count !== 0) answer.push(count);
+            answers.push(answer);
+        } 
+
+        return answers;
+    }
+    public getColElementAnswers() {
+        const answers: number[][] = [];
+        for (let j = 0; j < this._cols; j++) {
+            let answer: number[] = [];
+            let count = 0;
+            for (let i = 0; i < this._rows; i++) {
+                const element = this._elementBoard[i][j];
+                if (element.classList.contains("stone")) count++;
+                if (count !== 0 && !element.classList.contains("stone")) {
+                    answer.push(count);
+                    count = 0;
+                }
+            }
+            if (count !== 0) answer.push(count);
+            answers.push(answer);
+        }
+
         return answers;
     }
 }
