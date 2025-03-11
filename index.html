@@ -10,7 +10,9 @@
         <title>Typidoyun</title>
     </head>
     <body>
+
         <canvas id="canvas"></canvas>
+        <!-- <iframe id="background" frameborder="0" src="https://www.shadertoy.com/embed/43y3zD?gui=false&t=10&paused=false&muted=true" allowfullscreen></iframe> -->
         <h1>Typidoyun</h1>
         <div class="container">
             <div class="item" style="--color: #89ec5b">
@@ -142,8 +144,8 @@
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
 
-                // initialize(6);
-                // render(290, 0.75, 120, 300, [155, 155, 155], rotateStep);
+                initialize(6);
+                render(290, 0.75, 120, 300, [155, 155, 155], rotateStep);
             };
             window.onresize = () => {
                 canvas.width = window.innerWidth;

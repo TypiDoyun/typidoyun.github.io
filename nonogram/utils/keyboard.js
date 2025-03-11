@@ -1,4 +1,7 @@
-export var Keyboard;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Keyboard = void 0;
+var Keyboard;
 (function (Keyboard) {
     const listeners = new Map();
     Keyboard.addEventListener = ({ keyCodes, listener, keyState = "down", withCtrl = false, withAlt = false, withShift = false, useStrict = true }) => {
@@ -31,4 +34,4 @@ export var Keyboard;
         document.removeEventListener("keydown", wrapperListener);
         document.removeEventListener("keyup", wrapperListener);
     };
-})(Keyboard || (Keyboard = {}));
+})(Keyboard || (exports.Keyboard = Keyboard = {}));

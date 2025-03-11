@@ -1,4 +1,7 @@
-export var Random;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Random = void 0;
+var Random;
 (function (Random) {
     Random.randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
     Random.randBool = () => Math.random() >= 0.5;
@@ -22,4 +25,4 @@ export var Random;
             return x - Math.floor(x);
         };
     };
-})(Random || (Random = {}));
+})(Random || (exports.Random = Random = {}));

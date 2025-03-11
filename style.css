@@ -18,16 +18,25 @@ canvas {
     display: inline-block;
 }
 
+iframe {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    display: inline-block;
+    transform: translateY(-50%);
+}
+
 h1 {
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     text-align: center;
-    color: #efefef;
+    color: #fefefe;
+    /* color: #111; */
     font-size: 45px;
     margin: 0;
-    margin-top: 55px;
+    margin-top: 85px;
 }
 
 .button-field {

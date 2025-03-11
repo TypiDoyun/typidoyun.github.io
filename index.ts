@@ -1,6 +1,10 @@
 const items = Array.from(document.getElementsByClassName("item")) as HTMLDivElement[];
 const sections = Array.from(document.getElementsByClassName("section")) as HTMLDivElement[];
+const iframe = document.getElementById("background") as HTMLIFrameElement;
 const item = items[0];
+
+iframe.width = window.innerWidth.toString();
+iframe.height = (window.innerHeight * 1.2).toString();;
 
 const mousePosition = {
     x: 0,

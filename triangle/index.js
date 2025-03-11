@@ -36,7 +36,6 @@ const main = () => {
         drawLine(context, dot, abLine.add(abCenter), "#F88");
         drawLine(context, dot, bcLine.add(bcCenter), "#8F8");
         drawLine(context, dot, caLine.add(caCenter), "#88F");
-        // const maxLength = size * Math.sqrt(3) / 2;
         const bar = new Vector(canvas.width * 3 / 4, center.y + size * Math.sqrt(3) / 6);
         const abBar = new Vector(bar.x, bar.y - abLine.length);
         const bcBar = new Vector(bar.x, abBar.y - bcLine.length);
