@@ -1,14 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Board = exports.BlockType = void 0;
-const random_js_1 = require("../utils/random.js");
-var BlockType;
+import { Random } from "../utils/random.js";
+export var BlockType;
 (function (BlockType) {
     BlockType[BlockType["Empty"] = 0] = "Empty";
     BlockType[BlockType["Stone"] = 1] = "Stone";
     BlockType[BlockType["Flag"] = 2] = "Flag";
-})(BlockType || (exports.BlockType = BlockType = {}));
-class Board {
+})(BlockType || (BlockType = {}));
+export class Board {
     _rows;
     _cols;
     _board;
@@ -54,7 +51,7 @@ class Board {
         this._elementBoard = new Array(rows).fill(false).map(() => new Array(cols).fill(null));
     }
     placeStones(seed) {
-        const rand = random_js_1.Random.pseudoRandom(seed);
+        const rand = Random.pseudoRandom(seed);
         for (let i = 0; i < this._rows; i++) {
             for (let j = 0; j < this._cols; j++) {
                 this.set(i, j, BlockType.Empty);
@@ -143,4 +140,3 @@ class Board {
         return answers;
     }
 }
-exports.Board = Board;

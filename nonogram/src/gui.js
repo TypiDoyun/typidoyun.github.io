@@ -1,17 +1,14 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.drawBoard = exports.clickBlock = exports.setBlockType = exports.getBlockType = exports.connectBlock = exports.drawBingo = exports.board = void 0;
-const board_js_1 = require("../classes/board.js");
-const css_js_1 = require("../utils/css.js");
-const keyboard_js_1 = require("../utils/keyboard.js");
-const random_js_1 = require("../utils/random.js");
-exports.board = new board_js_1.Board(5, 5);
+import { BlockType, Board } from "../classes/board.js";
+import { CSS } from "../utils/css.js";
+import { Keyboard } from "../utils/keyboard.js";
+import { Random } from "../utils/random.js";
+export const board = new Board(5, 5);
 const boardElement = document.getElementById("board");
 const dropDown = document.getElementById("dropdown");
 const submitButton = document.getElementById("submit");
 const retryButton = document.getElementById("retry");
 const layer = document.getElementById("layer");
-keyboard_js_1.Keyboard.addEventListener({
+Keyboard.addEventListener({
     keyCodes: [
         "Enter"
     ],
@@ -19,20 +16,20 @@ keyboard_js_1.Keyboard.addEventListener({
         submit();
     }
 });
-keyboard_js_1.Keyboard.addEventListener({
+Keyboard.addEventListener({
     keyCodes: [
         "r",
         "ㄱ"
     ],
     listener(key, eventData) {
-        (0, exports.drawBoard)(exports.board);
+        drawBoard(board);
     }
 });
 submitButton.addEventListener("click", () => {
     submit();
 });
 retryButton.addEventListener("click", () => {
-    (0, exports.drawBoard)(exports.board);
+    drawBoard(board);
 });
 dropDown.addEventListener("change", eventData => {
     const { target } = eventData;
@@ -40,25 +37,25 @@ dropDown.addEventListener("change", eventData => {
         return;
     switch (+target.value) {
         case 5:
-            exports.board.resize(5, 5);
+            board.resize(5, 5);
             break;
         case 10:
-            exports.board.resize(10, 10);
+            board.resize(10, 10);
             break;
         case 15:
-            exports.board.resize(15, 15);
+            board.resize(15, 15);
             break;
         default:
-            exports.board.resize(5, 5);
+            board.resize(5, 5);
             target.value = "5";
     }
-    (0, exports.drawBoard)(exports.board);
+    drawBoard(board);
 });
 const submit = () => {
-    const rowAnswers = exports.board.getRowAnswers();
-    const colAnswers = exports.board.getColAnswers();
-    const rowValues = exports.board.getRowElementAnswers();
-    const colValues = exports.board.getColElementAnswers();
+    const rowAnswers = board.getRowAnswers();
+    const colAnswers = board.getColAnswers();
+    const rowValues = board.getRowElementAnswers();
+    const colValues = board.getColElementAnswers();
     let success = true;
     for (let i = 0; i < rowAnswers.length; i++) {
         if (rowAnswers[i].some((answer, index) => answer !== rowValues[i][index]))
@@ -73,15 +70,15 @@ const submit = () => {
             record = Date.now();
         timeTicking = false;
         layer.style.backgroundColor = "green";
-        css_js_1.CSS.blinkOnce(layer, 500);
+        CSS.blinkOnce(layer, 500);
     }
     else {
         layer.style.backgroundColor = "red";
-        css_js_1.CSS.blinkOnce(layer, 500);
-        css_js_1.CSS.shakeOnce(boardElement, 200);
+        CSS.blinkOnce(layer, 500);
+        CSS.shakeOnce(boardElement, 200);
     }
 };
-const drawBingo = (board) => {
+export const drawBingo = (board) => {
     const rowAnswers = board.getRowAnswers();
     const colAnswers = board.getColAnswers();
     const rowValues = board.getRowElementAnswers();
@@ -111,8 +108,7 @@ const drawBingo = (board) => {
         }
     }
 };
-exports.drawBingo = drawBingo;
-const connectBlock = (board, row, col) => {
+export const connectBlock = (board, row, col) => {
     const block = board.element[row][col];
     const leftBlock = board.element[row][col - 1];
     const rightBlock = board.element[row][col + 1];
@@ -163,50 +159,46 @@ const connectBlock = (board, row, col) => {
         bottomBlock.style.zIndex = `${4 - connectedCount}`;
     }
 };
-exports.connectBlock = connectBlock;
-const getBlockType = (board, row, col) => {
+export const getBlockType = (board, row, col) => {
     const block = board.element[row][col];
     if (block.classList.contains("empty"))
-        return board_js_1.BlockType.Empty;
+        return BlockType.Empty;
     if (block.classList.contains("flag"))
-        return board_js_1.BlockType.Flag;
+        return BlockType.Flag;
     if (block.classList.contains("stone"))
-        return board_js_1.BlockType.Stone;
+        return BlockType.Stone;
     throw new Error("Invalid block type");
 };
-exports.getBlockType = getBlockType;
-const setBlockType = (board, row, col, blockType) => {
+export const setBlockType = (board, row, col, blockType) => {
     const block = board.element[row][col];
-    const className = blockType === board_js_1.BlockType.Empty ? "empty" : (blockType === board_js_1.BlockType.Flag ? "flag" : "stone");
+    const className = blockType === BlockType.Empty ? "empty" : (blockType === BlockType.Flag ? "flag" : "stone");
     block.classList.remove("empty", "flag", "stone");
     block.classList.add(className);
-    (0, exports.drawBingo)(board);
-    (0, exports.connectBlock)(board, row, col);
+    drawBingo(board);
+    connectBlock(board, row, col);
     return blockType;
 };
-exports.setBlockType = setBlockType;
-const clickBlock = (type, board, row, col) => {
-    const blockType = (0, exports.getBlockType)(board, row, col);
+export const clickBlock = (type, board, row, col) => {
+    const blockType = getBlockType(board, row, col);
     switch (type) {
         case "left":
-            if ([board_js_1.BlockType.Empty, board_js_1.BlockType.Flag].includes(blockType)) {
-                return (0, exports.setBlockType)(board, row, col, board_js_1.BlockType.Stone);
+            if ([BlockType.Empty, BlockType.Flag].includes(blockType)) {
+                return setBlockType(board, row, col, BlockType.Stone);
             }
             else {
-                return (0, exports.setBlockType)(board, row, col, board_js_1.BlockType.Empty);
+                return setBlockType(board, row, col, BlockType.Empty);
             }
         case "right":
-            if ([board_js_1.BlockType.Flag, board_js_1.BlockType.Stone].includes(blockType)) {
-                return (0, exports.setBlockType)(board, row, col, board_js_1.BlockType.Empty);
+            if ([BlockType.Flag, BlockType.Stone].includes(blockType)) {
+                return setBlockType(board, row, col, BlockType.Empty);
             }
             else {
-                return (0, exports.setBlockType)(board, row, col, board_js_1.BlockType.Flag);
+                return setBlockType(board, row, col, BlockType.Flag);
             }
         default:
             throw new Error("Invalid click type");
     }
 };
-exports.clickBlock = clickBlock;
 let isDragging = false;
 let dragType;
 document.addEventListener("mouseup", () => {
@@ -223,16 +215,16 @@ setInterval(() => {
     const ms = (d % 1000 / 10).toFixed(0).padStart(2, "0");
     time.innerText = `${minutes}:${seconds}:${ms}`;
 });
-const drawBoard = (board) => {
+export const drawBoard = (board) => {
     console.log(board.board);
     startTime = Date.now();
     timeTicking = true;
-    const seed = random_js_1.Random.randInt(1, 10000000);
+    const seed = Random.randInt(1, 10000000);
     board.placeStones(seed);
-    css_js_1.CSS.setProperty("--board-rows", board.rows.toString());
-    css_js_1.CSS.setProperty("--board-cols", board.cols.toString());
-    css_js_1.CSS.setProperty("--block-size", `${80 / (Math.max(board.rows, board.cols) / 5)}px`);
-    css_js_1.CSS.setProperty("--block-gap", `${12 / (Math.max(board.rows, board.cols) / 5)}px`);
+    CSS.setProperty("--board-rows", board.rows.toString());
+    CSS.setProperty("--board-cols", board.cols.toString());
+    CSS.setProperty("--block-size", `${80 / (Math.max(board.rows, board.cols) / 5)}px`);
+    CSS.setProperty("--block-gap", `${12 / (Math.max(board.rows, board.cols) / 5)}px`);
     for (const child of [...boardElement.children]) {
         if (child.id)
             continue;
@@ -262,13 +254,13 @@ const drawBoard = (board) => {
             frame.addEventListener("mousedown", eventData => {
                 const clickType = (eventData.button === 2 || eventData.which === 3) ? "right" : "left";
                 isDragging = true;
-                dragType = (0, exports.clickBlock)(clickType, board, row, col);
+                dragType = clickBlock(clickType, board, row, col);
                 console.log(dragType);
             });
             frame.addEventListener("mouseenter", () => {
                 if (!isDragging)
                     return;
-                (0, exports.setBlockType)(board, row, col, dragType);
+                setBlockType(board, row, col, dragType);
             });
             frame.appendChild(block);
             rowElement.appendChild(frame);
@@ -276,4 +268,3 @@ const drawBoard = (board) => {
         boardElement.appendChild(rowElement);
     }
 };
-exports.drawBoard = drawBoard;

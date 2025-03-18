@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CSS = void 0;
 const opacityAnimation = [
     { opacity: "0", display: "inline-block" },
     { opacity: "0.2" },
@@ -17,7 +14,7 @@ const shakeAnimation = [
     { transform: "translate(-5px, 5px) rotate(-2deg)" },
     { transform: "translate(0, 0) rotate(0deg)" }
 ];
-var CSS;
+export var CSS;
 (function (CSS) {
     CSS.setProperty = (name, value) => document.documentElement.style.setProperty(name, value);
     CSS.giveStyle = (element, styles) => {
@@ -37,4 +34,4 @@ var CSS;
             easing: "ease"
         });
     };
-})(CSS || (exports.CSS = CSS = {}));
+})(CSS || (CSS = {}));
