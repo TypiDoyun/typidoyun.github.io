@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const contents = `카이로 선언 -(1943. 11. 27.)
 포츠담 선언 -(1945. 2.)
 광복 (1945. 8. 15.)

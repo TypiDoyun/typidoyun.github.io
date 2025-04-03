@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const menuItems = Array.from(document.getElementsByClassName("menuItem"));
 for (const menuItem of menuItems) {
     const textArray = menuItem.textContent.split("");

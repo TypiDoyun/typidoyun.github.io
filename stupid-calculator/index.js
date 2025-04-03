@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const calculate = (x, y) => {
     return `${x}${y}`;
 };

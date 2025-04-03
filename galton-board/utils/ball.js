@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const ballSize = 1.5;
 const framePerSecond = 60;
 const milisecondPerFrame = 1000 / framePerSecond;

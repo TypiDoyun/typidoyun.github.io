@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const makeDragable = (element) => {
     let isHolding = false;
     const startPosition = {

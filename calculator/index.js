@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const calculator = document.querySelector('.calculator');
 const buttons = Array.from(document.querySelectorAll('.button'));
 const formulaElement = document.getElementById('formula');

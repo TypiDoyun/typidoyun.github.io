@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const color = "#999";
 const createModal = (titleMessage, message) => {
     const modal = document.createElement("div");

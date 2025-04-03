@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 if (!context)

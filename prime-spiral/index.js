@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 console.time("prime");
 const primes = getPrimes(500000);
 console.timeEnd("prime");

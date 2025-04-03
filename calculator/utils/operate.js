@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const parentheses = ["(", ")"];
 const isParentheses = (character) => parentheses.includes(character);
 const isValidFormula = (formula) => {

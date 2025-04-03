@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const useLog = false;
 const drawDot = (context, vector, radius = 1, style = "#FFF") => {
     if (useLog)

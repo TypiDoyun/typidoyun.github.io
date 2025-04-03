@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 let index = 0;
 const imageSection = document.getElementById("imageSection");
 const moveButtons = Array.from(document.getElementsByClassName("moveButton"));

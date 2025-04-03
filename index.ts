@@ -46,7 +46,7 @@ for (let index = 0; index < sections.length; index++) {
         if (tick > 0) tick--;
     }, 10);
     
-    let interval;
+    let interval: number;
 
     section.addEventListener("mouseenter", () => {
         if (tick > 0) return;

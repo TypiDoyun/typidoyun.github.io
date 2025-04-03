@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var NumberType;
 (function (NumberType) {
     NumberType[NumberType["PerfectNumber"] = 0] = "PerfectNumber";

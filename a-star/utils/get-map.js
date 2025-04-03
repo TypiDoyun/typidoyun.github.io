@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const getMap = () => {
     const elementMap = document.getElementById("map");
     const blocks = document.getElementsByClassName("block");

@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const canvas = document.querySelector("canvas");
 const context = canvas.getContext("2d");
 const render = async (size) => {

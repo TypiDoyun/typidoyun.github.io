@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 let lastStartElement;
 let lastEndElement;
 const changeStatus = (eventData) => {

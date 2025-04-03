@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const getDivisors = (num) => {
     if (num <= 0)
         return [];
