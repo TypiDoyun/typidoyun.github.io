@@ -1,0 +1,456 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap');
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+}
+
+:root {
+    --bg: #181818;
+    --section-bg: #202020;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    user-select: none;
+}
+
+canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: inline-block;
+}
+
+iframe {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    display: inline-block;
+    transform: translateY(-50%);
+}
+
+h1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    color: #fefefe;
+    font-family: 'Pretendard-Regular', sans-serif;
+    /* color: #111; */
+    font-size: 60px;
+    margin: 0;
+    margin-top: 90px;
+}
+
+.button-field {
+    display: none;
+}
+
+body {
+    width: 100dvw;
+    height: 100dvh;
+    margin: 0;
+    background-color: var(--bg);
+
+    overflow: hidden;;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.item {
+    width: 300px;
+    height: 345px;
+}
+
+.section {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--section-bg);
+    transition: .5s;
+}
+
+.section:hover {
+    transform: scale(1.1);
+}
+
+[class^=line] {
+    position: absolute;
+    transition: .5s;
+    z-index: -1;
+}
+
+.section:hover [class^=line] {
+    background-color: var(--color);
+}
+
+.line1, .line2 {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 2px;
+}
+
+.line3, .line4 {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 245px;
+}
+
+.line1 {
+    top: 0;
+}
+
+.line2 {
+    bottom: 0;
+}
+
+.line3 {
+    left: 0;
+}
+
+.line4 {
+    right: 0;
+}
+
+.section:hover .line1 {
+    transform: translate(-50%, -5px);
+}
+
+.section:hover .line2 {
+    transform: translate(-50%, 5px);
+}
+
+.section:hover .line3 {
+    transform: translate(-5px, -50%);
+}
+
+.section:hover .line4 {
+    transform: translate(5px, -50%);
+}
+
+
+.content { 
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 32px 20px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.content::before {
+    content: "";
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    transition: all .5s, transform .2s;
+}
+
+.section:hover .content::before {
+    height: 100%;
+    transform: scaleX(4) translateY(-32px);
+    z-index: 0;
+    background-color: var(--color);
+}
+
+.icon {
+    position: relative;
+    z-index: 1;
+    width: 90px;
+    height: 90px;
+    color: var(--color);
+    background-color: var(--section-bg);
+    border: 3px solid var(--color);
+    display: flex;
+    font-size: 35px;
+    justify-content: center;
+    align-items: center;
+    transition: .5s;
+}
+
+.section:hover .icon {
+    background-color: var(--color);
+    border: 3px solid var(--section-bg);
+    color: var(--section-bg);
+}
+
+.title {
+    position: relative;
+    z-index: 1;
+    color: white;
+    font-weight: 400;
+    margin: 15px 0 10px 0;
+    transition: .5s;
+}
+
+.section:hover .title {
+    color: var(--section-bg);
+}
+
+.description {
+    position: relative;
+    z-index: 1;
+    color: #999999;
+    font-weight: 300;
+    line-height: 23px;
+    margin: 0;
+    transition: .5s;
+}
+
+.section:hover .description {
+    color: #303030;
+}
+
+.button {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    margin-top: 21px;
+    padding: 8px 16px;
+    color: var(--bg);
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-weight: 300;
+    background-color: var(--color);
+    text-decoration: none;
+    transition: .5s;
+}
+
+.section:hover .button {
+    background-color: var(--bg);
+    color: var(--color);
+}
+
+.button:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 1024px) {
+
+    canvas {
+        position: fixed;
+    }
+
+    *::-webkit-scrollbar {
+        display: none;
+    }
+      
+    * {
+        -ms-overflow-style: none; /* 인터넷 익스플로러 */
+        scrollbar-width: none; /* 파이어폭스 */
+    }
+
+    html {
+        scroll-snap-type: y mandatory;
+        scroll-behavior: smooth;
+        scroll-snap-stop: normal;
+    }
+
+    body {
+        height: fit-content;
+    }
+    
+    .container {
+        flex-direction: column;
+    }
+    
+    .item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        gap: 40px;
+
+        width: 100vw;
+        height: 100vh;
+
+        scroll-snap-align: start;
+    }
+
+    .section {
+        width: 300px;
+        height: 345px;
+    }
+
+    .button-field {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: start;
+        width: 10%;
+        height: 100%;
+        border-right: 2px solid var(--color);
+        background-color: var(--section-bg);
+    }
+
+    .button-content {
+        position: relative;
+        width: 165%;
+        height: 45px;
+        background-color: var(--bg);
+        transform: translateX(0);
+
+        transition: all .2s ease;
+    }
+
+    .button-content:hover {
+        width: 180%;
+    }
+
+    .align {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        color: var(--color);
+        background-color: var(--section-bg);
+        font-size: 15px;
+        text-align: center;
+        border: 2px solid var(--color);
+        border-left: none;
+        transition: all .1s;
+    }
+    
+    .move-button {
+        text-decoration: none;
+    }
+
+    .button-content:active .align {
+        left: -10%
+    }
+
+    /* a:active {
+        color: var(--bg);
+    } */
+}
+
+@media (max-width: 545px) {
+
+    .button-field {
+        display: none;
+    }
+
+    /* *::-webkit-scrollbar {
+        display: none;
+    } */
+      
+    /* * {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    html {
+        scroll-snap-type: y mandatory;
+        scroll-behavior: smooth;
+    } */
+
+    body {
+        height: calc(var(--vh, 1vh) * 300);
+    }
+    
+    .container {
+        flex-direction: column;
+    }
+    
+    .item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        gap: 40px;
+
+        width: 100vw;
+        height: 100vh;
+
+        scroll-snap-align: start;
+    }
+
+    .button-field {
+        position: absolute;
+        top: auto;
+        left: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        height: 5%;
+        box-sizing: border-box;
+        border: none;
+        background-color: var(--color);
+    }
+
+    .button-content {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg);
+        border: none;
+    }
+
+    .button-content:hover {
+        width: 100%;
+    }
+
+    .align {
+        display: inline-block;
+        position: relative;
+        height: 100%;
+        width: 100%;
+        border: none;
+    }
+
+    .move-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .button-content:active .align {
+        left: auto;
+    }
+}
+
+@media (max-width: 375px) {
+    h1 {
+        font-size: 35px;
+        margin-top: 85px;
+    }
+
+    .section {
+        transform: scale(0.75);
+    }
+
+    .section:hover {
+        transform: scale(0.8);
+    }
+}
