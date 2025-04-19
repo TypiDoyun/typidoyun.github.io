@@ -1,5 +1,4 @@
 import { Vec2 } from "vecs-ts";
-import { System } from "./namespaces/system";
 import { Canvas } from "./namespaces/canvas";
 import { Ease } from "./namespaces/ease";
 
@@ -73,10 +72,11 @@ const drawAxis = (canvas: HTMLCanvasElement) => {
             delay: waitingTime,
             easing
         });
-        // }, waitingTime);
     }
+    console.log(canvas.height / 2);
     for (let i = pixelPerUnit; i < canvas.height / 2; i += pixelPerUnit) {
         const n = i / pixelPerUnit;
+        console.log(n, i);
         const positive = canvas.height / 2 + i;
         const negative = canvas.height / 2 - i;
         let lineWidth: number;
@@ -91,8 +91,9 @@ const drawAxis = (canvas: HTMLCanvasElement) => {
             color = "#C7E9F1";
         }
 
-        const x = i / (canvas.width / 2);
+        const x = i / (canvas.height / 2);
         const waitingTime = inverseEasingFunction(x) * duration;
+        console.log(waitingTime, x, duration);  
         Canvas.drawLine(canvas, {
             from: new Vec2(canvas.width / 2, positive),
             to: new Vec2(0, positive),
@@ -170,7 +171,6 @@ const points: Vec2[] = [];
 const pointIds: number[] = [];
 const lineIds: number[] = [];
 
-
 const drawPoint = (canvas: HTMLCanvasElement, x: number, y: number) => {
     const before = points[points.length - 1];
     const point = new Vec2(x / canvas.width, (canvas.height - y) / canvas.height);
@@ -186,7 +186,7 @@ const drawPoint = (canvas: HTMLCanvasElement, x: number, y: number) => {
         center: point.clone.mul(new Vec2(canvas.width, canvas.height)),
         radius: points.length == 1 ? 8 : 5,
         fillColor: "#FFFFFF",
-        duration: 1000,
+        duration: 500,
         easing: Ease.Easing.EaseInOutSine
     }));
 
@@ -230,10 +230,11 @@ const main = () => {
         return;
     }
     
-    
     const resizeCanvas = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        console.log(window.innerWidth, window.innerHeight);
+        console.log(canvas.width, canvas.height);
         
         Canvas.redraw(canvas);
     }

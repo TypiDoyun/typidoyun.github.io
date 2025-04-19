@@ -6282,10 +6282,11 @@ const drawAxis = (canvas) => {
             delay: waitingTime,
             easing
         });
-        // }, waitingTime);
     }
+    console.log(canvas.height / 2);
     for (let i = pixelPerUnit; i < canvas.height / 2; i += pixelPerUnit) {
         const n = i / pixelPerUnit;
+        console.log(n, i);
         const positive = canvas.height / 2 + i;
         const negative = canvas.height / 2 - i;
         let lineWidth;
@@ -6298,8 +6299,9 @@ const drawAxis = (canvas) => {
             lineWidth = 0.5;
             color = "#C7E9F1";
         }
-        const x = i / (canvas.width / 2);
+        const x = i / (canvas.height / 2);
         const waitingTime = inverseEasingFunction(x) * duration;
+        console.log(waitingTime, x, duration);
         Canvas.drawLine(canvas, {
             from: new Vec2(canvas.width / 2, positive),
             to: new Vec2(0, positive),
@@ -6387,7 +6389,7 @@ const drawPoint = (canvas, x, y) => {
         center: point.clone.mul(new Vec2(canvas.width, canvas.height)),
         radius: points.length == 1 ? 8 : 5,
         fillColor: "#FFFFFF",
-        duration: 1000,
+        duration: 500,
         easing: Ease.Easing.EaseInOutSine
     }));
     if (points.length > 3) {
@@ -6426,8 +6428,10 @@ const main = () => {
         return;
     }
     const resizeCanvas = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        console.log(window.innerWidth, window.innerHeight);
+        console.log(canvas.width, canvas.height);
         Canvas.redraw(canvas);
     };
     resizeCanvas();
