@@ -8,6 +8,7 @@ export default {
     mode: "production",
     entry: {
         "polygon-area": path.join(__dirname, "dist/polygon-area/src", "index.js"),
+        "perlin": path.join(__dirname, "dist/perlin/src", "index.js"),
     },
     watch: true,
     output: {
