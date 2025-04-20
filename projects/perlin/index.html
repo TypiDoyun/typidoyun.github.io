@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
     <link rel="stylesheet" href="style.css">
 
     <title>Perlin</title>
@@ -11,14 +14,57 @@
 <body>
     <canvas id="canvas"></canvas>
 
+    <menu id="menu-bar">
+        <input type="checkbox" name="menu" id="menu">
+        <label for="menu">
+            <div class="line"></div>
+            <div class="menu-item">
+                <ion-icon name="menu-outline"></ion-icon>
+            </div>
+        </label>
+        <input type="checkbox" name="menu" id="settings">
+        <label for="settings">
+            <div class="line"></div>
+            <div class="menu-item">
+                <ion-icon name="settings-outline"></ion-icon>
+            </div>
+        </label>
+        
+    </menu>
+    <div class="content" id="menu-content">
+        <div id="button-section">
+            <div class="button" id="create">Create New</div>
+            <div class="button" id="save">Save to Image</div>
+        </div>
+    </div>
+    <div class="content" id="settings-content">
+        <div id="settings-section">
+            <div class="setting" id="seed-setting">
+                <label for="seed">Seed</label>
+                <input type="number" name="seed" id="seed" value="0">
+            </div>
+            <div class="setting" id="scale-setting">
+                <label for="scale">Scale</label>
+                <input type="number" name="scale" id="scale" value="1.0" step="0.1"  min="0.1" max="10000">
+            </div>
+            <div class="setting" id="octaves-setting">
+                <label for="octaves">Octaves</label>
+                <input type="number" name="octaves" id="octaves" value="4" min="1" max="16">
+            </div>
+            <div class="setting" id="persistence-setting">
+                <label for="persistence">Persistence</label>
+                <input type="number" name="persistence" id="persistence" value="0.5" step="0.001" min="0.001" max="1.0">
+            </div>
+            <div class="setting" id="lacunarity-setting">
+                <label for="lacunarity">Lacunarity</label>
+                <input type="number" name="lacunarity" id="lacunarity" value="2.0" step="0.001" min="1" max="10">
+            </div>
+        </div>
+    </div>
     <div id="progress-bar">
         <div id="progress-bar-fill"></div>
     </div>
 
-    <div class="button-section">
-        <div class="button" id="create">Create New</div>
-        <div class="button" id="save">Save to Image</div>
-    </div>
 
     <script src="main.bundle.js"></script>
 </body>

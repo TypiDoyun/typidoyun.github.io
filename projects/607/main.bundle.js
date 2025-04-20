@@ -568,6 +568,10 @@ let _currentIntervalId = null; // setInterval ID
 let _isDrawing = false; // 현재 작업 진행 중인지 나타내는 플래그
 let _isCancelled = false; // 작업 취소 요청 플래그
 let _seed = 0;
+let _scale = 1;
+let _octaves = 4;
+let _persistence = 0.5;
+let _lacunarity = 2.0;
 // ======================================================
 // 진행 상황 보고 함수 (타이머에 의해 주기적으로 호출됨)
 // ======================================================
@@ -607,8 +611,8 @@ function performChunk() {
         }
         const pixelLocation = new dist_vec/* Vec2 */.ZY(i % width, Math.floor(i / width));
         const location = new dist_vec/* Vec2 */.ZY((2 * pixelLocation.x - width) / height, (2 * pixelLocation.y - height) / height);
-        location.mulScalar(5); // Scale the coordinates
-        const noiseValue = PerlinNoise.fbm2D(location, _seed, 8, 0.5, 2);
+        location.mulScalar(_scale); // Scale the coordinates
+        const noiseValue = PerlinNoise.fbm2D(location, _seed, _octaves, _persistence, _lacunarity);
         const colorValue = Math.min(255, Math.max(0, (noiseValue / 2 + 0.5) * 255));
         const dataIndex = i * 4;
         data[dataIndex] = colorValue; // Red
@@ -704,6 +708,21 @@ self.onmessage = eventData => {
         }
         // 첫 번째 청크 처리 시작
         console.log('Worker starting first chunk processing.');
+        if (receivedData.seed !== undefined) {
+            _seed = receivedData.seed; // 시드 설정 (기본값 0)
+        }
+        if (receivedData.scale !== undefined) {
+            _scale = receivedData.scale; // 스케일 설정 (기본값 1)
+        }
+        if (receivedData.octaves !== undefined) {
+            _octaves = receivedData.octaves; // 옥타브 설정 (기본값 4)
+        }
+        if (receivedData.persistence !== undefined) {
+            _persistence = receivedData.persistence; // 지속성 설정 (기본값 0.5)
+        }
+        if (receivedData.lacunarity !== undefined) {
+            _lacunarity = receivedData.lacunarity; // 라쿠나리티 설정 (기본값 2.0)
+        }
         performChunk();
     }
     else if (receivedData.type === "cancel") {
@@ -761,7 +780,7 @@ console.log('Worker script loaded.'); // 워커 스크립트 로딩 확인용
 /******/ 	__webpack_require__.x = () => {
 /******/ 		// Load entry module and return exports
 /******/ 		// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 		var __webpack_exports__ = __webpack_require__.O(undefined, [5], () => (__webpack_require__(607)))
+/******/ 		var __webpack_exports__ = __webpack_require__.O(undefined, [386], () => (__webpack_require__(607)))
 /******/ 		__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 		return __webpack_exports__;
 /******/ 	};
@@ -880,7 +899,7 @@ console.log('Worker script loaded.'); // 워커 스크립트 로딩 확인용
 /******/ 		// object to store loaded chunks
 /******/ 		// "1" means "already loaded"
 /******/ 		var installedChunks = {
-/******/ 			988: 1
+/******/ 			607: 1
 /******/ 		};
 /******/ 		
 /******/ 		// importScripts chunk loading
@@ -918,7 +937,7 @@ console.log('Worker script loaded.'); // 워커 스크립트 로딩 확인용
 /******/ 	(() => {
 /******/ 		var next = __webpack_require__.x;
 /******/ 		__webpack_require__.x = () => {
-/******/ 			return __webpack_require__.e(5).then(next);
+/******/ 			return __webpack_require__.e(386).then(next);
 /******/ 		};
 /******/ 	})();
 /******/ 	

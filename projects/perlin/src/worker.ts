@@ -96,7 +96,12 @@ export type WorkerRequest = {
     canvas: {
         width: number,
         height: number
-    }
+    },
+    seed?: number,
+    scale?: number,
+    octaves?: number,
+    persistence?: number,
+    lacunarity?: number
 }
 export type WorkerResponse = {
     type: "create",
@@ -120,8 +125,8 @@ export type WorkerResponse = {
 // ======================================================
 // 전역 설정 변수
 // ======================================================
-// 진행 상황 보고 간격 (밀리초) - 2초마다 보고
-const REPORT_INTERVAL_MS = 100;
+// 진행 상황 보고 간격 (밀리초) - 0.25초마다 보고
+const REPORT_INTERVAL_MS = 250;
 
 // 한 번에 처리할 픽셀 단위 (청크 크기) - 이 값을 조절하여 performChunk 호출 빈도를 제어합니다.
 // 브라우저가 멈추지 않으면서 효율적인 값으로 테스트를 통해 결정하는 것이 좋습니다.
@@ -138,6 +143,11 @@ let _totalPixels = 0;      // 전체 픽셀 수
 let _currentIntervalId: NodeJS.Timeout | null = null; // setInterval ID
 let _isDrawing = false;    // 현재 작업 진행 중인지 나타내는 플래그
 let _isCancelled = false;  // 작업 취소 요청 플래그
+let _seed = 0;
+let _scale = 1;
+let _octaves = 4;
+let _persistence = 0.5;
+let _lacunarity = 2.0;
 
 
 // ======================================================
@@ -192,9 +202,9 @@ function performChunk() {
             (2 * pixelLocation.y - height) / height
         );
 
-        location.mulScalar(5); // Scale the coordinates
+        location.mulScalar(_scale); // Scale the coordinates
 
-        const noiseValue = PerlinNoise.fbm2D(location, 0, 8, 0.5, 2);
+        const noiseValue = PerlinNoise.fbm2D(location, _seed, _octaves, _persistence, _lacunarity);
 
         const colorValue = Math.min(255, Math.max(0, (noiseValue / 2 + 0.5) * 255));
 
@@ -245,6 +255,7 @@ function cleanupTask() {
     _canvas = null;
     _currentPixelIndex = 0;
     _totalPixels = 0;
+    _seed = Math.floor(Math.random() * 1000000); // 새로운 시드 생성 (다음 작업을 위해)
 
     if (_currentIntervalId !== null) {
         clearInterval(_currentIntervalId);
@@ -302,6 +313,21 @@ self.onmessage = eventData => {
 
         // 첫 번째 청크 처리 시작
         console.log('Worker starting first chunk processing.');
+        if (receivedData.seed !== undefined) {
+            _seed = receivedData.seed; // 시드 설정 (기본값 0)
+        }
+        if (receivedData.scale !== undefined) {
+            _scale = receivedData.scale; // 스케일 설정 (기본값 1)
+        }
+        if (receivedData.octaves !== undefined) {
+            _octaves = receivedData.octaves; // 옥타브 설정 (기본값 4)
+        }
+        if (receivedData.persistence !== undefined) {
+            _persistence = receivedData.persistence; // 지속성 설정 (기본값 0.5)
+        }
+        if (receivedData.lacunarity !== undefined) {
+            _lacunarity = receivedData.lacunarity; // 라쿠나리티 설정 (기본값 2.0)
+        }
         performChunk();
 
     } else if (receivedData.type === "cancel") {
